@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinador 2025 - Jogo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+
+        :root {
+            --light-blue-gradient-start: #d1f4ff;
+            --light-blue-gradient-end: #a3e6ff;
+            --bright-blue: #70d5ff;
+            --dark-blue: #2c3e50;
+            --container-bg: #ffffff;
+            --header-bg: #f0f8ff;
+            --text-color-dark: #34495e;
+            --text-color-light: #ecf0f1;
+            --button-action-bg: #5ac7e0;
+            --button-action-hover: #45b4c9;
+            --button-main-bg: #2ecc71;
+            --button-main-hover: #27ae60;
+            --button-save-bg: #f39c12;
+            --button-save-hover: #e67e22;
+            --button-small-bg: #95a5a6;
+            --button-small-hover: #7f8c8d;
+            --match-info-bg: #e0f7fa;
+            --match-info-border: #b2ebf2;
+            --last-match-bg: #e8f5e9;
+            --last-match-border: #c8e6c9;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--light-blue-gradient-start) 0%, var(--light-blue-gradient-end) 100%);
+            margin: 0;
+            color: var(--text-color-dark);
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid var(--bright-blue);
+        }
+
+        h1 {
+            color: var(--dark-blue);
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .header-info {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--header-bg);
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--bright-blue);
+        }
+
+        .header-info div {
+            text-align: left;
+        }
+
+        .header-info p {
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--text-color-dark);
+        }
+
+        .header-info span {
+            font-weight: 400;
+            color: var(--text-color-dark);
+        }
+
+        .header-info img {
+            height: 30px;
+            vertical-align: middle;
+            margin-left: 10px;
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1));
+        }
+
+        .calendar {
+            text-align: center;
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 800;
+            color: var(--bright-blue);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .main-content {
+            width: 100%;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .action-button {
+            background-color: var(--button-action-bg);
+            color: var(--text-color-light);
+            padding: 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .action-button:hover {
+            background-color: var(--button-action-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .main-action-button {
+            background-color: var(--button-main-bg);
+            color: white;
+            padding: 18px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .main-action-button:hover {
+            background-color: var(--button-main-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .small-button {
+            background-color: var(--button-small-bg);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: auto;
+            margin-top: 15px;
+            font-family: 'Montserrat', sans-serif; /* A FONTE CORRETA ESTÁ AQUI */
+        }
+
+        .small-button:hover {
+            background-color: var(--button-small-hover);
+        }
+
+        .match-info, .last-match-result {
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .match-info {
+            background-color: var(--match-info-bg);
+            border: 1px solid var(--match-info-border);
+        }
+
+        .last-match-result {
+            background-color: var(--last-match-bg);
+            border: 1px solid var(--last-match-border);
+        }
+
+        .match-info h3, .last-match-result h3 {
+            margin: 0 0 10px;
+            color: var(--dark-blue);
+            font-weight: 800;
+        }
+
+        .match-info p, .last-match-result p {
+            margin: 5px 0;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .last-match-result p {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--dark-blue);
+        }
+
+        .save-game-button {
+            background-color: var(--button-save-bg);
+            color: white;
+            padding: 18px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .save-game-button:hover {
+            background-color: var(--button-save-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Novo estilo para o aviso de fim de temporada */
+        .season-end-alert {
+            background-color: #e57373; /* Cor vermelha clara */
+            color: white;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Estilos para o bloco de links de mídia social */
+        .social-media-links {
+            margin-bottom: 20px; /* Espaçamento abaixo dos links e acima da logo do jogo */
+            text-align: center;
+            width: 100%;
+            font-family: 'Montserrat', sans-serif; /* Garante a fonte correta */
+            color: var(--text-color-dark); /* Garante a cor do texto */
+        }
+
+        .social-media-links p {
+            margin: 5px 0; /* Espaçamento entre os parágrafos */
+            font-size: 1em; /* Tamanho da fonte */
+            display: flex; /* Para alinhar imagem e texto */
+            align-items: center; /* Alinha verticalmente */
+            justify-content: center; /* Centraliza o conteúdo */
+        }
+
+        .social-media-links img {
+            height: 24px; /* Tamanho da logo */
+            margin-right: 10px; /* Espaçamento entre a logo e o texto */
+            vertical-align: middle; /* Alinhamento vertical */
+        }
+
+        .social-media-links a {
+            color: var(--bright-blue); /* Cor do link, usando variável do tema */
+            text-decoration: none; /* Remove sublinhado */
+            font-weight: 600; /* Negrito */
+            transition: color 0.3s ease;
+        }
+
+        .social-media-links a:hover {
+            color: var(--dark-blue); /* Cor ao passar o mouse */
+        }
+        
+        /* Estilos para a lista de clubes interessados */
+        .interested-clubs-list {
+            display: none; /* Inicia oculto */
+            width: 100%;
+            margin-top: 20px;
+            text-align: left;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-family: 'Montserrat', sans-serif; /* Garante a fonte correta */
+        }
+
+        .interested-clubs-list h3 {
+            color: var(--dark-blue);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .interested-clubs-list p {
+             text-align: center;
+             margin-bottom: 20px;
+        }
+
+        .interested-clubs-list ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .interested-clubs-list li {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .interested-clubs-list li:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .interested-clubs-list li img {
+            height: 40px;
+            margin-right: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            .header-info {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            .header-info div, .calendar {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="social-media-links">
+            <p><a href="https://youtube.com/@jogotreinador?si=G90hdGYpivG2iNDj" target="_blank"><img src="logos/youtube_logo.png" alt="Logo do YouTube">jogotreinador</a></p>
+            <p><img src="logos/gmail_logo.png" alt="Logo do Gmail">suporte: webtreinador@gmail.com</p>
+            <p><img src="logos/whatsapp_logo.png" alt="Logo do WhatsApp">nosso grupo: <a href="https://chat.whatsapp.com/FF5iUN9xtot0VYA3LkBtfn?mode=ems_copy_t">whatsapp</a></p>
+            <p><img src="logos/whatsapp_logo.png" alt="Logo do WhatsApp">canal: <a href="https://whatsapp.com/channel/0029VbBTyOAFy72Lq3JWsC1U">whatsapp</a></p>
+        </div>
+        <h1><img src="logos/logo_do_jogo.png" alt="Logo do Jogo" style="height: 150px;"></h1>
+        
+        <div class="header-info">
+            <div>
+                <p>Treinador: <span id="coachNameDisplay"></span></p>
+                <p>Time: <span id="teamDisplay"></span> <img id="teamLogo" src="" alt="Logo do Time"></p>
+            </div>
+            <p class="calendar">Data: <span id="dateDisplay"></span></p>
+        </div>
+
+        <div id="lastMatchResult" class="last-match-result" style="display:none;">
+            <h3>Último Resultado</h3>
+            <p><span id="lastMatchResultDisplay"></span></p>
+        </div>
+        
+        <div id="seasonEndAlert" class="season-end-alert" style="display:none;">
+            A temporada de 2025 terminou!
+        </div>
+
+        <div class="main-content" id="gameContent">
+            <div class="buttons-grid">
+                <button class="action-button" onclick="window.location.href='elenco.html'">Elenco</button>
+                <button class="action-button" onclick="window.location.href='competicoes.html'">Competições</button>
+                <button class="action-button" onclick="window.location.href='transferencias.html'">Transferências</button>
+                <button class="action-button" onclick="window.location.href='financas.html'">Finanças</button>
+                <button class="action-button" onclick="window.location.href='trofeus.html'">Troféus</button>
+            </div>
+        </div>
+        
+        <div id="matchInfo" class="match-info" style="display:none;">
+            <h3>Próxima Partida</h3>
+            <p><strong>Adversário:</strong> <span id="opponentDisplay"></span></p>
+            <p><strong>Competição:</strong> <span id="competitionDisplay">Brasileirão</span></p>
+        </div>
+        
+        <button class="main-action-button" id="mainActionButton">Pular Dia</button>
+        <button class="save-game-button" id="saveGameButton">Salvar Jogo</button>
+        <button class="small-button" id="resignButton">Pedir Demissão</button>
+        <button class="small-button" onclick="window.location.href='index.html'">Voltar</button>
+
+        <div id="interestedClubs" class="interested-clubs-list">
+            <h3>Clubes Interessados</h3>
+            <p>Selecione o clube que deseja assumir:</p>
+            <ul id="clubsList"></ul>
+        </div>
+    </div>
+
+    <script src="salvar.js"></script>
+    <script>
+        // Função para adicionar um prêmio/troféu ao localStorage
+        function adicionarPremioBrasileirao(posicao) {
+            const selectedTeam = localStorage.getItem('selectedTeam');
+            let trophies = JSON.parse(localStorage.getItem(`trofeus_${selectedTeam}`)) || [];
+            
+            if (posicao === 1) {
+                const newTrophy = {
+                    name: 'Campeão do Brasileirão',
+                    year: '2025'
+                };
+                trophies.push(newTrophy);
+                localStorage.setItem(`trofeus_${selectedTeam}`, JSON.stringify(trophies));
+                console.log('Parabéns! Seu time conquistou o Brasileirão!');
+            } else {
+                console.log(`Fim de temporada. Você terminou em ${posicao}º lugar.`);
+            }
+        }
+    
+        // Função para calcular a tabela final com base nos resultados
+        function calcularTabelaFinal() {
+            const brasileiraoCalendar = JSON.parse(localStorage.getItem('brasileiraoCalendar'));
+            const allTeams = ['Mirassol', 'Atlético-MG', 'Bahia', 'Botafogo', 'Ceará', 'Corinthians', 'Cruzeiro', 'Sport', 'Flamengo', 'Fluminense', 'Fortaleza', 'Grêmio', 'Internacional', 'Juventude', 'Palmeiras', 'Bragantino', 'São Paulo', 'Vasco', 'Vitória', 'Santos'];
+            
+            const tabela = {};
+            allTeams.forEach(team => {
+                tabela[team] = {
+                    pontos: 0,
+                    vitorias: 0,
+                    empates: 0,
+                    derrotas: 0,
+                    golsPro: 0,
+                    golsContra: 0,
+                    saldoGols: 0
+                };
+            });
+            
+            brasileiraoCalendar.forEach(rodada => {
+                rodada.partidas.forEach(partida => {
+                    if (partida.placar) {
+                        const placarCasa = parseInt(partida.placar.split('-')[0]);
+                        const placarFora = parseInt(partida.placar.split('-')[1]);
+                        
+                        // Atualiza estatísticas do time da casa
+                        tabela[partida.timeCasa].golsPro += placarCasa;
+                        tabela[partida.timeCasa].golsContra += placarFora;
+                        tabela[partida.timeCasa].saldoGols = tabela[partida.timeCasa].golsPro - tabela[partida.timeCasa].golsContra;
+
+                        // Atualiza estatísticas do time de fora
+                        tabela[partida.timeFora].golsPro += placarFora;
+                        tabela[partida.timeFora].golsContra += placarCasa;
+                        tabela[partida.timeFora].saldoGols = tabela[partida.timeFora].golsPro - tabela[partida.timeFora].golsContra;
+
+                        if (placarCasa > placarFora) {
+                            tabela[partida.timeCasa].pontos += 3;
+                            tabela[partida.timeCasa].vitorias += 1;
+                            tabela[partida.timeFora].derrotas += 1;
+                        } else if (placarFora > placarCasa) {
+                            tabela[partida.timeFora].pontos += 3;
+                            tabela[partida.timeFora].vitorias += 1;
+                            tabela[partida.timeCasa].derrotas += 1;
+                        } else {
+                            tabela[partida.timeCasa].pontos += 1;
+                            tabela[partida.timeFora].pontos += 1;
+                            tabela[partida.timeCasa].empates += 1;
+                            tabela[partida.timeFora].empates += 1;
+                        }
+                    }
+                });
+            });
+            
+            // Converte para um array e ordena
+            const tabelaArray = Object.keys(tabela).map(time => {
+                return { nome: time, ...tabela[time] };
+            });
+            
+            tabelaArray.sort((a, b) => {
+                if (b.pontos !== a.pontos) return b.pontos - a.pontos;
+                if (b.vitorias !== a.vitorias) return b.vitorias - a.vitorias;
+                if (b.saldoGols !== a.saldoGols) return b.saldoGols - a.saldoGols;
+                return b.golsPro - a.golsPro;
+            });
+            
+            return tabelaArray;
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const coachName = localStorage.getItem('coachName');
+            let selectedTeam = localStorage.getItem('selectedTeam');
+            const dateDisplay = document.getElementById('dateDisplay');
+            const mainActionButton = document.getElementById('mainActionButton');
+            const saveGameButton = document.getElementById('saveGameButton');
+            const matchInfo = document.getElementById('matchInfo');
+            const opponentDisplay = document.getElementById('opponentDisplay');
+            const lastMatchResultDiv = document.getElementById('lastMatchResult');
+            const lastMatchResultDisplay = document.getElementById('lastMatchResultDisplay');
+            const teamLogo = document.getElementById('teamLogo');
+            
+            const resignButton = document.getElementById('resignButton');
+            const interestedClubsDiv = document.getElementById('interestedClubs');
+            const clubsListUl = document.getElementById('clubsList');
+            const gameContentElements = document.querySelectorAll('.buttons-grid, #matchInfo, #mainActionButton, #saveGameButton, #lastMatchResult, #seasonEndAlert');
+            const otherButtons = document.querySelectorAll('.small-button');
+            
+            // Referência para o novo elemento de aviso
+            const seasonEndAlert = document.getElementById('seasonEndAlert');
+
+            if (!localStorage.getItem('financas')) {
+                const financasIniciais = inicializarFinancas();
+                localStorage.setItem('financas', JSON.stringify(financasIniciais));
+            }
+
+            // Gerar o calendário do Brasileirão se não existir
+            if (!localStorage.getItem('brasileiraoCalendar')) {
+                const allTeams = ['Mirassol', 'Atlético-MG', 'Bahia', 'Botafogo', 'Ceará', 'Corinthians', 'Cruzeiro', 'Sport', 'Flamengo', 'Fluminense', 'Fortaleza', 'Grêmio', 'Internacional', 'Juventude', 'Palmeiras', 'Bragantino', 'São Paulo', 'Vasco', 'Vitória', 'Santos'];
+                const calendar = gerarCalendarioBrasileirao(allTeams, selectedTeam);
+                localStorage.setItem('brasileiraoCalendar', JSON.stringify(calendar));
+            }
+            
+            // Esta função converte o nome do time para o formato do arquivo (minúsculas e traços)
+            function formatTeamNameForImage(teamName) {
+                return teamName.toLowerCase().replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i').replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ç/g, 'c').replace(/ /g, '_').replace(/-/g, '_');
+            }
+
+            if (coachName && selectedTeam) {
+                document.getElementById('coachNameDisplay').textContent = coachName;
+                document.getElementById('teamDisplay').textContent = selectedTeam;
+                
+                // Define o caminho da imagem baseado no time selecionado
+                const logoPath = `logos/${formatTeamNameForImage(selectedTeam)}.png`;
+                teamLogo.src = logoPath;
+
+            } else {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            let currentDate = localStorage.getItem('currentDate') ? new Date(localStorage.getItem('currentDate')) : new Date('2025-01-01T12:00:00');
+            let currentRound = parseInt(localStorage.getItem('currentRound')) || 1;
+            const brasileiraoCalendar = JSON.parse(localStorage.getItem('brasileiraoCalendar'));
+            
+            function formatDate(date) {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            }
+
+            function isFirstDayOfMonth(date) {
+                return date.getDate() === 1;
+            }
+
+            // Encontra a próxima partida do time do jogador que ainda não foi jogada
+            function findNextMatch() {
+                // Procura a rodada atual e a partida do usuário
+                const myMatch = brasileiraoCalendar.find(r => r.numero === currentRound)?.partidas.find(p => p.timeCasa === selectedTeam || p.timeFora === selectedTeam);
+                if (myMatch && !myMatch.placar) {
+                    return myMatch;
+                }
+                
+                // Se a partida da rodada atual já foi jogada, procura a próxima rodada
+                for (let i = currentRound + 1; i <= 38; i++) {
+                    const nextRound = brasileiraoCalendar.find(r => r.numero === i);
+                    if (nextRound) {
+                        const nextMatch = nextRound.partidas.find(p => p.timeCasa === selectedTeam || p.timeFora === selectedTeam);
+                        if (nextMatch && !nextMatch.placar) {
+                            localStorage.setItem('currentRound', i);
+                            currentRound = i;
+                            return nextMatch;
+                        }
+                    }
+                }
+                return null;
+            }
+            
+            function updateDisplay() {
+                dateDisplay.textContent = formatDate(currentDate);
+
+                const lastResult = localStorage.getItem('lastMatchResult');
+                if (lastResult) {
+                    lastMatchResultDisplay.textContent = lastResult;
+                    lastMatchResultDiv.style.display = 'block';
+                } else {
+                    lastMatchResultDiv.style.display = 'none';
+                }
+                
+                const seasonEndDate = new Date('2025-11-01T12:00:00');
+                
+                if (currentDate.getTime() >= seasonEndDate.getTime() || currentRound > 38) {
+                    mainActionButton.textContent = 'Fim da Temporada';
+                    mainActionButton.disabled = true;
+                    seasonEndAlert.style.display = 'block';
+
+                    // Lógica para verificar a posição final
+                    const tabelaFinal = calcularTabelaFinal();
+                    const myTeamPosition = tabelaFinal.findIndex(team => team.nome === selectedTeam) + 1;
+                    
+                    if (myTeamPosition === 1) {
+                        adicionarPremioBrasileirao(1);
+                    } else {
+                        adicionarPremioBrasileirao(myTeamPosition);
+                    }
+
+                    return;
+                }
+                
+                const nextMatch = findNextMatch();
+                let todayIsMatchDay = false;
+                if (nextMatch) {
+                    const nextMatchDate = new Date(nextMatch.data);
+                    if (currentDate.toDateString() === nextMatchDate.toDateString()) {
+                        todayIsMatchDay = true;
+                    }
+                }
+                
+                if (todayIsMatchDay) {
+                    const opponent = nextMatch.timeCasa === selectedTeam ? nextMatch.timeFora : nextMatch.timeCasa;
+                    const isHomeMatch = nextMatch.timeCasa === selectedTeam;
+                    
+                    mainActionButton.textContent = `Jogar Partida da Rodada ${currentRound}`;
+
+                    mainActionButton.onclick = () => {
+                        localStorage.setItem('currentDate', currentDate.toISOString());
+                        localStorage.setItem('currentRoundOpponent', opponent);
+                        localStorage.setItem('currentRoundIsHomeMatch', isHomeMatch);
+                        localStorage.setItem('currentRound', currentRound); 
+                        // Redireciona para a nova página de uniformes antes de ir para as táticas
+                        window.location.href = 'uniformes.html';
+                    };
+                    opponentDisplay.textContent = opponent;
+                    matchInfo.style.display = 'block';
+                } else {
+                    mainActionButton.textContent = 'Pular Dia';
+                    mainActionButton.onclick = () => {
+                        if (isFirstDayOfMonth(currentDate)) {
+                            if (currentDate.getMonth() !== 0) {
+                                adicionarPatrocinioMensal();
+                            }
+                        }
+                        currentDate.setDate(currentDate.getDate() + 1);
+                        localStorage.setItem('currentDate', currentDate.toISOString());
+                        localStorage.removeItem('lastMatchResult');
+                        lastMatchResultDiv.style.display = 'none';
+                        updateDisplay();
+                    };
+                    matchInfo.style.display = 'none';
+                }
+            }
+
+            saveGameButton.addEventListener('click', function() {
+                salvarJogo();
+            });
+            
+            // --- NOVA LÓGICA DE DEMISSÃO E CONTRATAÇÃO ---
+
+            const allTeams = ['Mirassol', 'Atlético-MG', 'Bahia', 'Botafogo', 'Ceará', 'Corinthians', 'Cruzeiro', 'Sport', 'Flamengo', 'Fluminense', 'Fortaleza', 'Grêmio', 'Internacional', 'Juventude', 'Palmeiras', 'Bragantino', 'São Paulo', 'Vasco', 'Vitória', 'Santos'];
+            
+            resignButton.addEventListener('click', function() {
+                // Esconde os elementos principais da tela
+                gameContentElements.forEach(el => el.style.display = 'none');
+                
+                // Esconde os botões de navegação
+                document.querySelector('.buttons-grid').style.display = 'none';
+
+                // Mostra a lista de clubes interessados
+                interestedClubsDiv.style.display = 'block';
+                clubsListUl.innerHTML = '';
+                
+                const availableClubs = allTeams.filter(team => team !== selectedTeam);
+                const interestedClubs = [];
+                for (let i = 0; i < 3; i++) {
+                    const randomIndex = Math.floor(Math.random() * availableClubs.length);
+                    if (availableClubs[randomIndex]) {
+                        interestedClubs.push(availableClubs.splice(randomIndex, 1)[0]);
+                    }
+                }
+                
+                interestedClubs.forEach(clubName => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<img src="logos/${formatTeamNameForImage(clubName)}.png" alt="Logo do ${clubName}"><span>${clubName}</span>`;
+                    li.addEventListener('click', function() {
+                        localStorage.setItem('selectedTeam', clubName);
+                        selectedTeam = clubName;
+                        
+                        localStorage.setItem('currentDate', new Date('2025-01-01T12:00:00').toISOString());
+                        localStorage.setItem('currentRound', 1);
+                        localStorage.removeItem('lastMatchResult');
+                        localStorage.removeItem('brasileiraoCalendar');
+                        window.location.reload();
+                    });
+                    clubsListUl.appendChild(li);
+                });
+            });
+
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>
+

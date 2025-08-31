@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competições - Treinador 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-light: #e8f4f8;
+            --blue-medium: #3498db;
+            --blue-dark: #2c3e50;
+            --gray-light: #f4f6f9;
+            --gray-medium: #ced4da;
+            --white: #ffffff;
+            --black: #333;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--blue-light);
+            margin: 0;
+            color: var(--black);
+        }
+
+        .container {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            max-width: 900px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #e0e6ed;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--blue-dark);
+            margin-bottom: 25px;
+            font-size: 2.4em;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .competition-button {
+            background-color: var(--white);
+            padding: 15px 25px;
+            border: 2px solid var(--gray-medium);
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            color: var(--black);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .competition-button:hover {
+            border-color: var(--blue-medium);
+            background-color: var(--blue-light);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .competition-button img {
+            height: 50px;
+        }
+
+        #showEstaduaisBtn {
+            color: var(--black);
+            background-color: var(--white);
+            padding: 15px 25px;
+        }
+
+        #showEstaduaisBtn:hover {
+            background-color: var(--blue-light);
+        }
+
+        .competitions-container {
+            width: 100%;
+            text-align: left;
+            display: none;
+            padding: 20px;
+            background-color: var(--gray-light);
+            border-radius: 10px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.03);
+            box-sizing: border-box;
+        }
+
+        .competitions-container h2 {
+            color: var(--blue-dark);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--blue-medium);
+            padding-bottom: 10px;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .table-container-scroll {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .artilharia-table {
+            width: 100%;
+            table-layout: fixed;
+        }
+        
+        .artilharia-table colgroup {
+            width: 100%;
+        }
+
+        .artilharia-table colgroup col:nth-child(1) {
+            width: 45%;
+        }
+        
+        .artilharia-table colgroup col:nth-child(2) {
+            width: 45%;
+        }
+        
+        .artilharia-table colgroup col:nth-child(3) {
+            width: 10%;
+        }
+        
+        .artilharia-table td, .artilharia-table th {
+            text-align: left;
+            vertical-align: top;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 4px; /* Reduzindo o padding */
+            font-size: 0.7em; /* Reduzindo o tamanho da fonte */
+        }
+        
+        .artilharia-table td:first-child, .artilharia-table th:first-child {
+            max-width: 45%;
+        }
+
+        .artilharia-table td:nth-child(2), .artilharia-table th:nth-child(2) {
+            max-width: 45%;
+        }
+
+        .artilharia-table td:last-child, .artilharia-table th:last-child {
+            max-width: 10%;
+            text-align: center;
+        }
+
+        thead th {
+            background-color: var(--blue-medium);
+            color: var(--white);
+            padding: 10px; /* Reduzindo o padding do cabeçalho */
+            text-align: left;
+            font-weight: 600;
+        }
+
+        tbody td {
+            padding: 8px; /* Reduzindo o padding do corpo da tabela */
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .libertadores-dark {
+            background-color: #006400;
+            color: white;
+        }
+
+        .libertadores-light {
+            background-color: #90EE90;
+        }
+
+        .sulamericana {
+            background-color: #1E90FF;
+            color: white;
+        }
+
+        .rebaixamento {
+            background-color: #DC143C;
+            color: white;
+        }
+
+        .user-team {
+            background-color: #d1ecf1;
+            font-weight: 600;
+        }
+
+        .legend {
+            width: 100%;
+            margin-top: 25px;
+            text-align: left;
+            padding: 15px;
+            background-color: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+            box-sizing: border-box;
+        }
+        
+        .legend h3 {
+            margin-top: 0;
+            color: var(--blue-dark);
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .legend-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+            font-size: 0.9em;
+        }
+        
+        .legend-item:hover {
+            background-color: var(--gray-light);
+        }
+        
+        .color-box {
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            flex-shrink: 0;
+        }
+
+        .return-button {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 35px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .return-button:hover {
+            background: linear-gradient(145deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .artilharia-section, .calendar-section {
+            width: 100%;
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .artilharia-section h3, .calendar-section h3 {
+            color: var(--blue-dark);
+            border-bottom: 2px solid var(--blue-medium);
+            padding-bottom: 10px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .calendar-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .rodada {
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .rodada:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .rodada h4 {
+            margin: 0 0 15px;
+            color: var(--blue-dark);
+            font-size: 1.2em;
+            font-weight: 600;
+            border-bottom: 1px solid var(--gray-medium);
+            padding-bottom: 10px;
+        }
+
+        .rodada p {
+            margin: 8px 0;
+            font-size: 0.95em;
+            line-height: 1.5;
+            color: var(--gray-dark);
+        }
+        
+        .rodada strong {
+            color: var(--blue-dark);
+        }
+
+        .play-match-btn {
+            background: linear-gradient(145deg, #28a745, #218838);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .play-match-btn:hover {
+            background: linear-gradient(145deg, #218838, #28a745);
+            transform: translateY(-2px);
+        }
+
+        .play-match-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .play-match-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .buttons-container {
+                gap: 10px;
+            }
+
+            .competition-button img {
+                height: 40px;
+            }
+
+            .artilharia-table {
+                font-size: 0.8em;
+            }
+
+            .artilharia-table colgroup col:nth-child(1) {
+                width: 45%;
+            }
+            .artilharia-table colgroup col:nth-child(2) {
+                width: 45%;
+            }
+            .artilharia-table colgroup col:nth-child(3) {
+                width: 10%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Competições</h1>
+        
+        <div class="buttons-container">
+            <button id="showEstaduaisBtn" class="competition-button"><img src="logos/estaduais.png" alt="Campeonatos Estaduais"></button>
+            <button id="showBrasileiraoBtn" class="competition-button"><img src="logos/brasileirao.png" alt="Brasileirão Betano 2025"></button>
+            <button id="showCopaBrasilBtn" class="competition-button"><img src="logos/copa_do_brasil.png" alt="Copa do Brasil"></button>
+            <button id="showSulAmericanaBtn" class="competition-button"><img src="logos/sulamericana.png" alt="Sul-Americana"></button>
+            <button id="showLibertadoresBtn" class="competition-button"><img src="logos/libertadores.png" alt="Libertadores"></button>
+            <button id="showSuperMundialBtn" class="competition-button"><img src="logos/super_mundial.png" alt="Super Mundial"></button>
+            <button id="showIntercontinentalBtn" class="competition-button"><img src="logos/intercontinental.png" alt="Intercontinental"></button>
+        </div>
+
+        <div id="brasileiraoCompleteContainer" class="competitions-container">
+            <h2>Brasileirão 2025</h2>
+
+            <section class="brasileirao-sub-section">
+                <h3>Tabela de Classificação</h3>
+                <div class="table-container-scroll">
+                    <table id="leagueTable">
+                        <thead>
+                            <tr>
+                                <th>Pos.</th>
+                                <th>Time</th>
+                                <th>P</th>
+                                <th>J</th>
+                                <th>V</th>
+                                <th>E</th>
+                                <th>D</th>
+                                <th>GP</th>
+                                <th>GC</th>
+                                <th>SG</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <div class="legend">
+                <h3></h3>
+                <div class="legend-grid">
+                    <div class="legend-item">
+                        <div class="color-box" style="background-color: #006400;"></div>
+                        <span>Libertadores</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="color-box" style="background-color: #90EE90;"></div>
+                        <span>Pré-Libertadores</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="color-box" style="background-color: #1E90FF;"></div>
+                        <span>Sul-Americana</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="color-box" style="background-color: #DC143C;"></div>
+                        <span>Zona de Rebaixamento</span>
+                    </div>
+                </div>
+            </div>
+
+            <section class="calendar-section">
+                <h3>Calendário de Jogos</h3>
+                <div class="calendar-container" id="calendar-container">
+                </div>
+            </section>
+        </div>
+
+        <div id="estaduaisContainer" class="competitions-container">
+            <h2>Estaduais</h2>
+            <p>A tabela do Campeonato Estadual será exibida aqui.</p>
+        </div>
+        <div id="copaBrasilContainer" class="competitions-container">
+            <h2>Copa do Brasil</h2>
+            <p>O chaveamento da Copa do Brasil será exibido aqui.</p>
+        </div>
+        <div id="sulAmericanaContainer" class="competitions-container">
+            <h2>Sul-Americana</h2>
+            <p>A tabela da Sul-Americana será exibida aqui.</p>
+        </div>
+        <div id="libertadoresContainer" class="competitions-container">
+            <h2>Libertadores</h2>
+            <p>A tabela da Libertadores será exibida aqui.</p>
+        </div>
+        <div id="superMundialContainer" class="competitions-container">
+            <h2>Super Mundial</h2>
+            <p>O chaveamento do Super Mundial será exibido aqui.</p>
+        </div>
+        <div id="intercontinentalContainer" class="competitions-container">
+            <h2>Intercontinental</h2>
+            <p>A tabela do Intercontinental será exibida aqui.</p>
+        </div>
+
+        <button class="return-button" onclick="window.location.href='game.html'">Voltar</button>
+    </div>
+
+    <script>
+        const squadsData = {
+            'Mirassol': { over: 82, players: [
+                { nome: 'Alex Muralha', posicao: 'Goleiro', idade: 35, valor: 'R$ 900 mil', over: 82 },
+                { nome: 'Walter', posicao: 'Goleiro', idade: 37, valor: 'R$ 1 milhão', over: 85 },
+                { nome: 'Luiz Otávio', posicao: 'Zagueiro', idade: 32, valor: 'R$ 3,8 milhões', over: 84 },
+                { nome: 'Jemmes', posicao: 'Zagueiro', idade: 25, valor: 'R$ 2,2 milhões', over: 80 },
+                { nome: 'Reinaldo', posicao: 'Lateral Esquerdo', idade: 35, valor: 'R$ 2,2 milhões', over: 86 },
+                { nome: 'Felipe Jonatan', posicao: 'Lateral Esquerdo', idade: 27, valor: 'R$ 12 milhões', over: 88 },
+                { nome: 'Daniel Borges', posicao: 'Lateral Direito', idade: 32, valor: 'R$ 1,9 milhão', over: 83 },
+                { nome: 'Yago Felipe', posicao: 'Volante', idade: 30, valor: 'R$ 11 milhões', over: 87 },
+                { nome: 'Roni', posicao: 'Volante', idade: 26, valor: 'R$ 6,5 milhões', over: 81 },
+                { nome: 'Neto Moura', posicao: 'Meia', idade: 29, valor: 'R$ 4,9 milhões', over: 84 },
+                { nome: 'Danielzinho', posicao: 'Meia', idade: 30, valor: 'R$ 4,9 milhões', over: 83 },
+                { nome: 'Alesson', posicao: 'Atacante', idade: 26, valor: 'R$ 3,8 milhões', over: 85 },
+                { nome: 'Negueba', posicao: 'Atacante', idade: 25, valor: 'R$ 4,9 milhões', over: 82 },
+                { nome: 'Edson Carioca', posicao: 'Atacante', idade: 28, valor: 'R$ 4,3 milhões', over: 81 }
+            ]},
+            'Atlético-MG': { over: 88, players: [
+                { nome: 'Everson', posicao: 'Goleiro', idade: 35, valor: 'R$ 16 milhões', over: 88 },
+                { nome: 'Guilherme Arana', posicao: 'Lateral Esquerdo', idade: 28, valor: 'R$ 60 milhões', over: 90 },
+                { nome: 'Jemerson', posicao: 'Zagueiro', idade: 32, valor: 'R$ 11 milhões', over: 86 },
+                { nome: 'Bruno Fuchs', posicao: 'Zagueiro', idade: 26, valor: 'R$ 33 milhões', over: 87 },
+                { nome: 'Gustavo Scarpa', posicao: 'Meia', idade: 31, valor: 'R$ 38 milhões', over: 89 },
+                { nome: 'Paulinho', posicao: 'Atacante', idade: 25, valor: 'R$ 80 milhões', over: 91 },
+                { nome: 'Hulk', posicao: 'Atacante', idade: 39, valor: 'R$ 16 milhões', over: 92 },
+                { nome: 'Igor Gomes', posicao: 'Meia', idade: 26, valor: 'R$ 22 milhões', over: 85 },
+                { nome: 'Alan Kardec', posicao: 'Atacante', idade: 36, valor: 'R$ 5,5 milhões', over: 82 },
+                { nome: 'Matías Zaracho', posicao: 'Meia', idade: 27, valor: 'R$ 44 milhões', over: 88 },
+                { nome: 'Rubens', posicao: 'Lateral Esquerdo', idade: 23, valor: 'R$ 20 milhões', over: 84 },
+                { nome: 'Otávio', posicao: 'Volante', idade: 31, valor: 'R$ 27 milhões', over: 86 },
+                { nome: 'Alan Franco', posicao: 'Volante', idade: 27, valor: 'R$ 22 milhões', over: 85 },
+                { nome: 'Pedrinho', posicao: 'Meia', idade: 27, valor: 'R$ 11 milhões', over: 83 }
+            ]},
+            'Bahia': { over: 85, players: [
+                { nome: 'Marcos Felipe', posicao: 'Goleiro', idade: 29, valor: 'R$ 16 milhões', over: 84 },
+                { nome: 'Gabriel Xavier', posicao: 'Zagueiro', idade: 24, valor: 'R$ 11 milhões', over: 81 },
+                { nome: 'Cuesta', posicao: 'Zagueiro', idade: 36, valor: 'R$ 5,5 milhões', over: 83 },
+                { nome: 'Santiago Arias', posicao: 'Lateral Direito', idade: 33, valor: 'R$ 16 milhões', over: 85 },
+                { nome: 'Cauly', posicao: 'Meia', idade: 29, valor: 'R$ 33 milhões', over: 88 },
+                { nome: 'Everton Ribeiro', posicao: 'Meia', idade: 36, valor: 'R$ 8,8 milhões', over: 87 },
+                { nome: 'Ademir', posicao: 'Atacante', idade: 30, valor: 'R$ 11 milhões', over: 84 },
+                { nome: 'Jean Lucas', posicao: 'Volante', idade: 27, valor: 'R$ 25 milhões', over: 86 },
+                { nome: 'Thaciano', posicao: 'Meia', idade: 30, valor: 'R$ 16 milhões', over: 85 },
+                { nome: 'Carlos De Pena', posicao: 'Meia', idade: 33, valor: 'R$ 5,5 milhões', over: 82 },
+                { nome: 'Everaldo', posicao: 'Atacante', idade: 34, valor: 'R$ 5,5 milhões', over: 80 },
+                { nome: 'Biel', posicao: 'Atacante', idade: 24, valor: 'R$ 14 milhões', over: 82 },
+                { nome: 'Kanu', posicao: 'Zagueiro', idade: 28, valor: 'R$ 8,2 milhões', over: 83 },
+                { nome: 'Juba', posicao: 'Lateral Esquerdo', idade: 26, valor: 'R$ 8,2 milhões', over: 81 }
+            ]},
+            'Botafogo': { over: 86, players: [
+                { nome: 'John', posicao: 'Goleiro', idade: 29, valor: 'R$ 11 milhões', over: 84 },
+                { nome: 'Lucas Halter', posicao: 'Zagueiro', idade: 29, valor: 'R$ 11 milhões', over: 85 },
+                { nome: 'Tiquinho Soares', posicao: 'Atacante', idade: 34, valor: 'R$ 16 milhões', over: 88 },
+                { nome: 'Júnior Santos', posicao: 'Atacante', idade: 30, valor: 'R$ 16 milhões', over: 87 },
+                { nome: 'Luiz Henrique', posicao: 'Atacante', idade: 24, valor: 'R$ 66 milhões', over: 89 },
+                { nome: 'Savarino', posicao: 'Atacante', idade: 28, valor: 'R$ 27 milhões', over: 86 },
+                { nome: 'Danilo Barbosa', posicao: 'Volante', idade: 29, valor: 'R$ 11 milhões', over: 84 },
+                { nome: 'Mateo Ponte', posicao: 'Lateral Direito', idade: 22, valor: 'R$ 16 milhões', over: 83 },
+                { nome: 'Gregore', posicao: 'Volante', idade: 31, valor: 'R$ 11 milhões', over: 82 },
+                { nome: 'Alexander Barboza', posicao: 'Zagueiro', idade: 30, valor: 'R$ 8,2 milhões', over: 81 },
+                { nome: 'Damián Suárez', posicao: 'Lateral Direito', idade: 37, valor: 'R$ 2,7 milhões', over: 80 },
+                { nome: 'Óscar Romero', posicao: 'Meia', idade: 33, valor: 'R$ 6,6 milhões', over: 82 },
+                { nome: 'Jeffinho', posicao: 'Atacante', idade: 25, valor: 'R$ 27 milhões', over: 86 },
+                { nome: 'Lucas Perri', posicao: 'Goleiro', idade: 27, valor: 'R$ 19 milhões', over: 87 }
+            ]},
+            'Ceará': { over: 80, players: [
+                { nome: 'Richard', posicao: 'Goleiro', idade: 34, valor: 'R$ 4,9 milhões', over: 81 },
+                { nome: 'Matheus Bahia', posicao: 'Lateral Esquerdo', idade: 26, valor: 'R$ 7,1 milhões', over: 80 },
+                { nome: 'David Ricardo', posicao: 'Zagueiro', idade: 22, valor: 'R$ 3,8 milhões', over: 78 },
+                { nome: 'Ramon Menezes', posicao: 'Zagueiro', idade: 32, valor: 'R$ 4,3 milhões', over: 79 },
+                { nome: 'Lourenço', posicao: 'Meia', idade: 27, valor: 'R$ 5,5 milhões', over: 82 },
+                { nome: 'Facundo Castro', posicao: 'Atacante', idade: 30, valor: 'R$ 3,3 milhões', over: 81 },
+                { nome: 'Saulo Mineiro', posicao: 'Atacante', idade: 28, valor: 'R$ 2,2 milhões', over: 79 },
+                { nome: 'Rafael Varela', posicao: 'Meia', idade: 25, valor: 'R$ 2,7 milhões', over: 77 },
+                { nome: 'Aylon', posicao: 'Atacante', idade: 33, valor: 'R$ 3,3 milhões', over: 80 },
+                { nome: 'Janderson', posicao: 'Atacante', idade: 26, valor: 'R$ 3,8 milhões', over: 78 },
+                { nome: 'Richardson', posicao: 'Volante', idade: 33, valor: 'R$ 3,3 milhões', over: 80 },
+                { nome: 'Jorge Recalde', posicao: 'Meia', idade: 33, valor: 'R$ 2,2 milhões', over: 81 },
+                { nome: 'De Lucca', posicao: 'Volante', idade: 25, valor: 'R$ 1,6 milhão', over: 77 },
+                { nome: 'Facundo Barceló', posicao: 'Atacante', idade: 31, valor: 'R$ 2,2 milhões', over: 80 }
+            ]},
+            'Corinthians': { over: 86, players: [
+                { nome: 'Cássio', posicao: 'Goleiro', idade: 38, valor: 'R$ 2,7 milhões', over: 88 },
+                { nome: 'Fagner', posicao: 'Lateral Direito', idade: 36, valor: 'R$ 2,7 milhões', over: 87 },
+                { nome: 'Félix Torres', posicao: 'Zagueiro', idade: 28, valor: 'R$ 16 milhões', over: 85 },
+                { nome: 'Cacá', posicao: 'Zagueiro', idade: 32, valor: 'R$ 11 milhões', over: 84 },
+                { nome: 'Breno Bidon', posicao: 'Meia', idade: 20, valor: 'R$ 22 milhões', over: 83 },
+                { nome: 'Rodrigo Garro', posicao: 'Meia', idade: 27, valor: 'R$ 27 milhões', over: 86 },
+                { nome: 'Romero', posicao: 'Atacante', idade: 33, valor: 'R$ 4,4 milhões', over: 83 },
+                { nome: 'Yuri Alberto', posicao: 'Atacante', idade: 24, valor: 'R$ 55 milhões', over: 89 },
+                { nome: 'Wesley', posicao: 'Atacante', idade: 20, valor: 'R$ 55 milhões', over: 88 },
+                { nome: 'Gustavo Henrique', posicao: 'Zagueiro', idade: 32, valor: 'R$ 6,6 milhões', over: 82 },
+                { nome: 'Raniele', posicao: 'Volante', idade: 29, valor: 'R$ 16 milhões', over: 84 },
+                { nome: 'Hugo', posicao: 'Lateral Esquerdo', idade: 28, valor: 'R$ 5,5 milhões', over: 81 },
+                { nome: 'Pedro Raul', posicao: 'Atacante', idade: 28, valor: 'R$ 22 milhões', over: 85 },
+                { nome: 'Igor Coronado', posicao: 'Meia', idade: 32, valor: 'R$ 11 milhões', over: 84 }
+            ]},
+            'Cruzeiro': { over: 87, players: [
+                { nome: 'Gabriel Grando', posicao: 'Goleiro', idade: 25, valor: 'R$ 11 milhões', over: 82 },
+                { nome: 'Zé Ivaldo', posicao: 'Zagueiro', idade: 27, valor: 'R$ 11 milhões', over: 84 },
+                { nome: 'João Marcelo', posicao: 'Zagueiro', idade: 24, valor: 'R$ 16 milhões', over: 83 },
+                { nome: 'William', posicao: 'Lateral Direito', idade: 30, valor: 'R$ 11 milhões', over: 86 },
+                { nome: 'Matheus Pereira', posicao: 'Meia', idade: 29, valor: 'R$ 66 milhões', over: 90 },
+                { nome: 'Lucas Silva', posicao: 'Volante', idade: 32, valor: 'R$ 11 milhões', over: 85 },
+                { nome: 'Romero', posicao: 'Meia', idade: 34, valor: 'R$ 4,4 milhões', over: 82 },
+                { nome: 'Arthur Gomes', posicao: 'Atacante', idade: 27, valor: 'R$ 22 milhões', over: 86 },
+                { nome: 'Rafa Silva', posicao: 'Atacante', idade: 32, valor: 'R$ 2,7 milhões', over: 81 },
+                { nome: 'Kaio Jorge', posicao: 'Atacante', idade: 23, valor: 'R$ 22 milhões', over: 85 },
+                { nome: 'Cifuentes', posicao: 'Volante', idade: 26, valor: 'R$ 19 milhões', over: 83 },
+                { nome: 'Gabriel Verón', posicao: 'Atacante', idade: 22, valor: 'R$ 11 milhões', over: 84 },
+                { nome: 'Dinenno', posicao: 'Atacante', idade: 31, valor: 'R$ 11 milhões', over: 83 },
+                { nome: 'Barreal', posicao: 'Atacante', idade: 24, valor: 'R$ 22 milhões', over: 85 }
+            ]},
+            'Sport': { over: 80, players: [
+                { nome: 'Caíque França', posicao: 'Goleiro', idade: 29, valor: 'R$ 2,7 milhões', over: 80 },
+                { nome: 'Rafael Thyere', posicao: 'Zagueiro', idade: 32, valor: 'R$ 4,4 milhões', over: 81 },
+                { nome: 'Felipinho', posicao: 'Zagueiro', idade: 24, valor: 'R$ 3,8 milhões', over: 78 },
+                { nome: 'Rosales', posicao: 'Lateral Direito', idade: 36, valor: 'R$ 550 mil', over: 77 },
+                { nome: 'Lucas Lima', posicao: 'Meia', idade: 35, valor: 'R$ 1,1 milhão', over: 80 },
+                { nome: 'Alan Ruiz', posicao: 'Meia', idade: 31, valor: 'R$ 3,3 milhões', over: 82 },
+                { nome: 'Chrystian Barletta', posicao: 'Atacante', idade: 23, valor: 'R$ 1,6 milhão', over: 79 },
+                { nome: 'Gustavo Coutinho', posicao: 'Atacante', idade: 26, valor: 'R$ 4,4 milhões', over: 83 },
+                { nome: 'Zé Roberto', posicao: 'Atacante', idade: 32, valor: 'R$ 1,6 milhão', over: 78 },
+                { nome: 'Roberto Rosales', posicao: 'Lateral Direito', idade: 36, valor: 'R$ 550 mil', over: 77 },
+                { nome: 'Pedro Vilhena', posicao: 'Meia', idade: 22, valor: 'R$ 1,1 milhão', over: 77 },
+                { nome: 'Zé Roberto', posicao: 'Atacante', idade: 32, valor: 'R$ 1,6 milhão', over: 78 },
+                { nome: 'Christian', posicao: 'Meia', idade: 23, valor: 'R$ 1,1 milhão', over: 77 },
+                { nome: 'Fabricio Daniel', posicao: 'Atacante', idade: 28, valor: 'R$ 1,1 milhão', over: 78 }
+            ]},
+            'Flamengo': { over: 90, players: [
+                { nome: 'Rossi', posicao: 'Goleiro', idade: 30, valor: 'R$ 33 milhões', over: 88 },
+                { nome: 'Varela', posicao: 'Lateral Direito', idade: 31, valor: 'R$ 16 milhões', over: 85 },
+                { nome: 'Léo Pereira', posicao: 'Zagueiro', idade: 29, valor: 'R$ 33 milhões', over: 89 },
+                { nome: 'Fabrício Bruno', posicao: 'Zagueiro', idade: 29, valor: 'R$ 22 milhões', over: 88 },
+                { nome: 'Gerson', posicao: 'Volante', idade: 28, valor: 'R$ 44 milhões', over: 90 },
+                { nome: 'De La Cruz', posicao: 'Meia', idade: 28, valor: 'R$ 82 milhões', over: 91 },
+                { nome: 'Arrascaeta', posicao: 'Meia', idade: 34, valor: 'R$ 82 milhões', over: 92 },
+                { nome: 'Pedro', posicao: 'Atacante', idade: 28, valor: 'R$ 93 milhões', over: 92 },
+                { nome: 'Bruno Henrique', posicao: 'Atacante', idade: 34, valor: 'R$ 16 milhões', over: 88 },
+                { nome: 'Cebolinha', posicao: 'Atacante', idade: 29, valor: 'R$ 38 milhões', over: 89 },
+                { nome: 'Luiz Araújo', posicao: 'Atacante', idade: 28, valor: 'R$ 38 milhões', over: 87 },
+                { nome: 'Allan', posicao: 'Volante', idade: 28, valor: 'R$ 16 milhões', over: 85 },
+                { nome: 'Ayrton Lucas', posicao: 'Lateral Esquerdo', idade: 28, valor: 'R$ 33 milhões', over: 88 },
+                { nome: 'Léo Ortiz', posicao: 'Zagueiro', idade: 28, valor: 'R$ 27 milhões', over: 87 }
+            ]},
+            'Fluminense': { over: 88, players: [
+                { nome: 'Fábio', posicao: 'Goleiro', idade: 45, valor: 'R$ 1,6 milhão', over: 87 },
+                { nome: 'Samuel Xavier', posicao: 'Lateral Direito', idade: 35, valor: 'R$ 4,4 milhões', over: 84 },
+                { nome: 'Felipe Melo', posicao: 'Zagueiro', idade: 42, valor: 'R$ 1,6 milhão', over: 82 },
+                { nome: 'Manoel', posicao: 'Zagueiro', idade: 35, valor: 'R$ 5,5 milhões', over: 83 },
+                { nome: 'André', posicao: 'Volante', idade: 24, valor: 'R$ 126 milhões', over: 90 },
+                { nome: 'Ganso', posicao: 'Meia', idade: 35, valor: 'R$ 5,5 milhões', over: 86 },
+                { nome: 'Jhon Arias', posicao: 'Atacante', idade: 28, valor: 'R$ 66 milhões', over: 89 },
+                { nome: 'Cano', posicao: 'Atacante', idade: 37, valor: 'R$ 11 milhões', over: 88 },
+                { nome: 'Keno', posicao: 'Atacante', idade: 36, valor: 'R$ 5,5 milhões', over: 85 },
+                { nome: 'Marcelo', posicao: 'Lateral Esquerdo', idade: 37, valor: 'R$ 5,5 milhões', over: 87 },
+                { nome: 'Martinelli', posicao: 'Volante', idade: 24, valor: 'R$ 27 milhões', over: 85 },
+                { nome: 'Marquinhos', posicao: 'Atacante', idade: 22, valor: 'R$ 27 milhões', over: 86 },
+                { nome: 'Douglas Costa', posicao: 'Atacante', idade: 34, valor: 'R$ 2,7 milhões', over: 83 },
+                { nome: 'Renato Augusto', posicao: 'Meia', idade: 37, valor: 'R$ 5,5 milhões', over: 84 }
+            ]},
+            'Fortaleza': { over: 86, players: [
+                { nome: 'João Ricardo', posicao: 'Goleiro', idade: 36, valor: 'R$ 2,2 milhões', over: 82 },
+                { nome: 'Brítez', posicao: 'Zagueiro', idade: 32, valor: 'R$ 5,5 milhões', over: 84 },
+                { nome: 'Tinga', posicao: 'Lateral Direito', idade: 31, valor: 'R$ 8,2 milhões', over: 85 },
+                { nome: 'Pochettino', posicao: 'Meia', idade: 30, valor: 'R$ 11 milhões', over: 86 },
+                { nome: 'Moisés', posicao: 'Atacante', idade: 28, valor: 'R$ 16 milhões', over: 87 },
+                { nome: 'Lucero', posicao: 'Atacante', idade: 33, valor: 'R$ 11 milhões', over: 86 },
+                { nome: 'Yago Pikachu', posicao: 'Meia', idade: 33, valor: 'R$ 6,6 milhões', over: 85 },
+                { nome: 'Hércules', posicao: 'Volante', idade: 24, valor: 'R$ 2,2 milhões', over: 80 },
+                { nome: 'Bruno Pacheco', posicao: 'Lateral Esquerdo', idade: 33, valor: 'R$ 5,5 milhões', over: 83 },
+                { nome: 'Felipe Jonatan', posicao: 'Lateral Esquerdo', idade: 27, valor: 'R$ 12 milhões', over: 88 },
+                { nome: 'Titi', posicao: 'Zagueiro', idade: 37, valor: 'R$ 1,1 milhão', over: 82 },
+                { nome: 'Pedro Augusto', posicao: 'Volante', idade: 28, valor: 'R$ 5,5 milhões', over: 81 },
+                { nome: 'Marinho', posicao: 'Atacante', idade: 35, valor: 'R$ 3,8 milhões', over: 84 },
+                { nome: 'Zé Welison', posicao: 'Volante', idade: 30, valor: 'R$ 6,6 milhões', over: 83 }
+            ]},
+            'Grêmio': { over: 87, players: [
+                { nome: 'Marchesín', posicao: 'Goleiro', idade: 37, valor: 'R$ 2,7 milhões', over: 86 },
+                { nome: 'Rodrigo Ely', posicao: 'Zagueiro', idade: 31, valor: 'R$ 5,5 milhões', over: 84 },
+                { nome: 'Kannemann', posicao: 'Zagueiro', idade: 34, valor: 'R$ 11 milhões', over: 88 },
+                { nome: 'Geromel', posicao: 'Zagueiro', idade: 40, valor: 'R$ 2,7 milhões', over: 87 },
+                { nome: 'Villasanti', posicao: 'Volante', idade: 28, valor: 'R$ 38 milhões', over: 88 },
+                { nome: 'Cristaldo', posicao: 'Meia', idade: 28, valor: 'R$ 19 milhões', over: 87 },
+                { nome: 'Pepê', posicao: 'Volante', idade: 27, valor: 'R$ 11 milhões', over: 85 },
+                { nome: 'Soteldo', posicao: 'Atacante', idade: 28, valor: 'R$ 27 milhões', over: 89 },
+                { nome: 'Diego Costa', posicao: 'Atacante', idade: 36, valor: 'R$ 2,7 milhões', over: 86 },
+                { nome: 'Pavón', posicao: 'Atacante', idade: 29, valor: 'R$ 22 milhões', over: 87 },
+                { nome: 'João Pedro', posicao: 'Lateral Direito', idade: 28, valor: 'R$ 5,5 milhões', over: 83 },
+                { nome: 'Dodi', posicao: 'Volante', idade: 28, valor: 'R$ 6,6 milhões', over: 84 },
+                { nome: 'Edenílson', posicao: 'Volante', idade: 35, valor: 'R$ 4,4 milhões', over: 85 },
+                { nome: 'Everton Galdino', posicao: 'Atacante', idade: 28, valor: 'R$ 11 milhões', over: 84 }
+            ]},
+            'Internacional': { over: 88, players: [
+                { nome: 'Rochet', posicao: 'Goleiro', idade: 32, valor: 'R$ 16 milhões', over: 87 },
+                { nome: 'Vitão', posicao: 'Zagueiro', idade: 25, valor: 'R$ 33 milhões', over: 88 },
+                { nome: 'Gabriel Mercado', posicao: 'Zagueiro', idade: 38, valor: 'R$ 2,2 milhões', over: 83 },
+                { nome: 'Renê', posicao: 'Lateral Esquerdo', idade: 33, valor: 'R$ 4,9 milhões', over: 85 },
+                { nome: 'Mauricio', posicao: 'Meia', idade: 24, valor: 'R$ 49 milhões', over: 89 },
+                { nome: 'Alan Patrick', posicao: 'Meia', idade: 34, valor: 'R$ 11 milhões', over: 90 },
+                { nome: 'Wanderson', posicao: 'Atacante', idade: 31, valor: 'R$ 16 milhões', over: 87 },
+                { nome: 'Valencia', posicao: 'Atacante', idade: 35, valor: 'R$ 11 milhões', over: 88 },
+                { nome: 'Bruno Henrique', posicao: 'Volante', idade: 35, valor: 'R$ 4,9 milhões', over: 84 },
+                { nome: 'Bruno Gomes', posicao: 'Volante', idade: 24, valor: 'R$ 11 milhões', over: 82 },
+                { nome: 'Bustos', posicao: 'Lateral Direito', idade: 29, valor: 'R$ 22 milhões', over: 86 },
+                { nome: 'Borré', posicao: 'Atacante', idade: 29, valor: 'R$ 55 milhões', over: 90 },
+                { nome: 'Fernando', posicao: 'Volante', idade: 38, valor: 'R$ 1,6 milhão', over: 81 },
+                { nome: 'Thiago Maia', posicao: 'Volante', idade: 28, valor: 'R$ 22 milhões', over: 85 }
+            ]},
+            'Juventude': { over: 80, players: [
+                { nome: 'Gabriel Vasconcellos', posicao: 'Goleiro', idade: 32, valor: 'R$ 5,5 milhões', over: 82 },
+                { nome: 'Danilo Boza', posicao: 'Zagueiro', idade: 29, valor: 'R$ 3,8 milhões', over: 80 },
+                { nome: 'Rodrigo Sam', posicao: 'Zagueiro', idade: 28, valor: 'R$ 2,2 milhões', over: 78 },
+                { nome: 'João Lucas', posicao: 'Lateral Esquerdo', idade: 27, valor: 'R$ 2,2 milhões', over: 79 },
+                { nome: 'Jadson', posicao: 'Volante', idade: 31, valor: 'R$ 2,7 milhões', over: 81 },
+                { nome: 'Mandaca', posicao: 'Volante', idade: 21, valor: 'R$ 3,8 milhões', over: 79 },
+                { nome: 'Nenê', posicao: 'Meia', idade: 44, valor: 'R$ 550 mil', over: 83 },
+                { nome: 'Marcelinho', posicao: 'Atacante', idade: 26, valor: 'R$ 3,3 milhões', over: 81 },
+                { nome: 'Lucas Barbosa', posicao: 'Atacante', idade: 24, valor: 'R$ 5,5 milhões', over: 82 },
+                { nome: 'Erik Farias', posicao: 'Atacante', idade: 25, valor: 'R$ 3,8 milhões', over: 80 },
+                { nome: 'Kleiton', posicao: 'Meia', idade: 22, valor: 'R$ 3,3 milhões', over: 78 },
+                { nome: 'Gabriel Taliari', posicao: 'Atacante', idade: 28, valor: 'R$ 1,1 milhão', over: 77 },
+                { nome: 'João Pedro', posicao: 'Lateral Direito', idade: 22, valor: 'R$ 1,6 milhão', over: 77 },
+                { nome: 'Zé Marcos', posicao: 'Zagueiro', idade: 27, valor: 'R$ 1,1 milhão', over: 79 }
+            ]},
+            'Palmeiras': { over: 90, players: [
+                { nome: 'Weverton', posicao: 'Goleiro', idade: 37, valor: 'R$ 22 milhões', over: 89 },
+                { nome: 'Murilo', posicao: 'Zagueiro', idade: 28, valor: 'R$ 33 milhões', over: 88 },
+                { nome: 'Piquerez', posicao: 'Lateral Esquerdo', idade: 26, valor: 'R$ 38 milhões', over: 89 },
+                { nome: 'Richard Ríos', posicao: 'Volante', idade: 25, valor: 'R$ 22 milhões', over: 87 },
+                { nome: 'Zé Rafael', posicao: 'Volante', idade: 32, valor: 'R$ 27 milhões', over: 88 },
+                { nome: 'Raphael Veiga', posicao: 'Meia', idade: 30, valor: 'R$ 60 milhões', over: 91 },
+                { nome: 'Dudu', posicao: 'Atacante', idade: 33, valor: 'R$ 11 milhões', over: 88 },
+                { nome: 'Rony', posicao: 'Atacante', idade: 30, valor: 'R$ 27 milhões', over: 87 },
+                { nome: 'Endrick', posicao: 'Atacante', idade: 19, valor: 'R$ 275 milhões', over: 92 },
+                { nome: 'Flaco López', posicao: 'Atacante', idade: 24, valor: 'R$ 27 milhões', over: 86 },
+                { nome: 'Estêvão', posicao: 'Atacante', idade: 18, valor: 'R$ 165 milhões', over: 90 },
+                { nome: 'Mayke', posicao: 'Lateral Direito', idade: 32, valor: 'R$ 16 milhões', over: 86 },
+                { nome: 'Gustavo Gómez', posicao: 'Zagueiro', idade: 32, valor: 'R$ 44 milhões', over: 91 },
+                { nome: 'Luan', posicao: 'Zagueiro', idade: 32, valor: 'R$ 27 milhões', over: 87 }
+            ]},
+            'Bragantino': { over: 87, players: [
+                { nome: 'Cleiton', posicao: 'Goleiro', idade: 28, valor: 'R$ 22 milhões', over: 85 },
+                { nome: 'Léo Ortiz', posicao: 'Zagueiro', idade: 28, valor: 'R$ 27 milhões', over: 87 },
+                { nome: 'Luan Cândido', posicao: 'Lateral Esquerdo', idade: 24, valor: 'R$ 38 milhões', over: 88 },
+                { nome: 'Juninho Capixaba', posicao: 'Lateral Esquerdo', idade: 27, valor: 'R$ 16 milhões', over: 85 },
+                { nome: 'Matheus Fernandes', posicao: 'Volante', idade: 27, valor: 'R$ 16 milhões', over: 84 },
+                { nome: 'Eric Ramires', posicao: 'Meia', idade: 25, valor: 'R$ 16 milhões', over: 85 },
+                { nome: 'Helinho', posicao: 'Atacante', idade: 25, valor: 'R$ 27 milhões', over: 87 },
+                { nome: 'Vitinho', posicao: 'Atacante', idade: 26, valor: 'R$ 38 milhões', over: 88 },
+                { nome: 'Eduardo Sasha', posicao: 'Atacante', idade: 33, valor: 'R$ 8,2 milhões', over: 86 },
+                { nome: 'Lucas Evangelista', posicao: 'Meia', idade: 30, valor: 'R$ 22 milhões', over: 86 },
+                { nome: 'Bruninho', posicao: 'Meia', idade: 22, valor: 'R$ 16 milhões', over: 83 },
+                { nome: 'Thiago Borbas', posicao: 'Atacante', idade: 22, valor: 'R$ 27 milhões', over: 87 },
+                { nome: 'Nathan Mendes', posicao: 'Lateral Direito', idade: 22, valor: 'R$ 14 milhões', over: 83 },
+                { nome: 'Henry Mosquera', posicao: 'Atacante', idade: 24, valor: 'R$ 11 milhões', over: 84 }
+            ]},
+            'São Paulo': { over: 87, players: [
+                { nome: 'Rafael', posicao: 'Goleiro', idade: 35, valor: 'R$ 11 milhões', over: 86 },
+                { nome: 'Arboleda', posicao: 'Zagueiro', idade: 34, valor: 'R$ 16 milhões', over: 88 },
+                { nome: 'Diego Costa', posicao: 'Zagueiro', idade: 25, valor: 'R$ 22 milhões', over: 87 },
+                { nome: 'Welington', posicao: 'Lateral Esquerdo', idade: 24, valor: 'R$ 27 milhões', over: 86 },
+                { nome: 'Alisson', posicao: 'Volante', idade: 32, valor: 'R$ 11 milhões', over: 85 },
+                { nome: 'Pablo Maia', posicao: 'Volante', idade: 23, valor: 'R$ 38 milhões', over: 89 },
+                { nome: 'Lucas Moura', posicao: 'Atacante', idade: 32, valor: 'R$ 22 milhões', over: 88 },
+                { nome: 'Calleri', posicao: 'Atacante', idade: 31, valor: 'R$ 33 milhões', over: 89 },
+                { nome: 'Luciano', posicao: 'Atacante', idade: 32, valor: 'R$ 22 milhões', over: 87 },
+                { nome: 'Nestor', posicao: 'Meia', idade: 25, valor: 'R$ 27 milhões', over: 86 },
+                { nome: 'Ferreirinha', posicao: 'Atacante', idade: 27, valor: 'R$ 19 milhões', over: 85 },
+                { nome: 'Igor Vinícius', posicao: 'Lateral Direito', idade: 28, valor: 'R$ 11 milhões', over: 84 },
+                { nome: 'Luiz Gustavo', posicao: 'Volante', idade: 38, valor: 'R$ 4,4 milhões', over: 83 },
+                { nome: 'Erick', posicao: 'Atacante', idade: 27, valor: 'R$ 11 milhões', over: 82 }
+            ]},
+            'Vasco': { over: 84, players: [
+                { nome: 'Léo Jardim', posicao: 'Goleiro', idade: 29, valor: 'R$ 16 milhões', over: 85 },
+                { nome: 'Gary Medel', posicao: 'Zagueiro', idade: 37, valor: 'R$ 5,5 milhões', over: 84 },
+                { nome: 'Léo', posicao: 'Zagueiro', idade: 29, valor: 'R$ 11 milhões', over: 83 },
+                { nome: 'Victor Luis', posicao: 'Lateral Esquerdo', idade: 32, valor: 'R$ 2,7 milhões', over: 81 },
+                { nome: 'Lucas Piton', posicao: 'Lateral Esquerdo', idade: 24, valor: 'R$ 27 milhões', over: 87 },
+                { nome: 'Praxedes', posicao: 'Meia', idade: 24, valor: 'R$ 11 milhões', over: 83 },
+                { nome: 'Payet', posicao: 'Meia', idade: 37, valor: 'R$ 8,8 milhões', over: 88 },
+                { nome: 'Vegetti', posicao: 'Atacante', idade: 36, valor: 'R$ 8,2 milhões', over: 86 },
+                { nome: 'David', posicao: 'Atacante', idade: 29, valor: 'R$ 8,2 milhões', over: 84 },
+                { nome: 'Adson', posicao: 'Meia', idade: 25, valor: 'R$ 11 milhões', over: 82 },
+                { nome: 'Galdames', posicao: 'Volante', idade: 27, valor: 'R$ 11 milhões', over: 83 },
+                { nome: 'Rossi', posicao: 'Atacante', idade: 32, valor: 'R$ 5,5 milhões', over: 80 },
+                { nome: 'Paulo Henrique', posicao: 'Lateral Direito', idade: 28, valor: 'R$ 8,2 milhões', over: 81 },
+                { nome: 'Hugo Moura', posicao: 'Volante', idade: 27, valor: 'R$ 11 milhões', over: 82 }
+            ]},
+            'Vitória': { over: 81, players: [
+                { nome: 'Lucas Arcanjo', posicao: 'Goleiro', idade: 26, valor: 'R$ 4,4 milhões', over: 80 },
+                { nome: 'Wagner Leonardo', posicao: 'Zagueiro', idade: 26, valor: 'R$ 5,5 milhões', over: 81 },
+                { nome: 'Zeca', posicao: 'Lateral Direito', idade: 30, valor: 'R$ 5,5 milhões', over: 82 },
+                { nome: 'Patric Calmon', posicao: 'Lateral Esquerdo', idade: 32, valor: 'R$ 3,3 milhões', over: 78 },
+                { nome: 'Willian Oliveira', posicao: 'Volante', idade: 31, valor: 'R$ 3,3 milhões', over: 79 },
+                { nome: 'Luan Santos', posicao: 'Meia', idade: 26, valor: 'R$ 3,8 milhões', over: 80 },
+                { nome: 'Matheusinho', posicao: 'Meia', idade: 27, valor: 'R$ 5,5 milhões', over: 83 },
+                { nome: 'Osvaldo', posicao: 'Atacante', idade: 38, valor: 'R$ 550 mil', over: 78 },
+                { nome: 'Alerrandro', posicao: 'Atacante', idade: 25, valor: 'R$ 11 milhões', over: 85 },
+                { nome: 'Jean Mota', posicao: 'Meia', idade: 31, valor: 'R$ 5,5 milhões', over: 81 },
+                { nome: 'Everaldo', posicao: 'Atacante', idade: 30, valor: 'R$ 3,8 milhões', over: 82 },
+                { nome: 'Caio Dantas', posicao: 'Atacante', idade: 32, valor: 'R$ 2,7 milhões', over: 80 },
+                { nome: 'Dudu', posicao: 'Volante', idade: 26, valor: 'R$ 2,7 milhões', over: 79 },
+                { nome: 'Rodrigo Andrade', posicao: 'Volante', idade: 28, valor: 'R$ 1,6 milhão', over: 77 }
+            ]},
+            'Santos': { over: 85, players: [
+                { nome: 'João Paulo', posicao: 'Goleiro', idade: 29, valor: 'R$ 11 milhões', over: 85 },
+                { nome: 'Joaquim', posicao: 'Zagueiro', idade: 27, valor: 'R$ 27 milhões', over: 86 },
+                { nome: 'Gil', posicao: 'Zagueiro', idade: 38, valor: 'R$ 2,7 milhões', over: 83 },
+                { nome: 'Hayner', posicao: 'Lateral-Direito', idade: 29, valor: 'R$ 5,5 milhões', over: 82 },
+                { nome: 'Dodô', posicao: 'Lateral-Esquerdo', idade: 33, valor: 'R$ 5,5 milhões', over: 81 },
+                { nome: 'João Schmidt', posicao: 'Volante', idade: 32, valor: 'R$ 8,2 milhões', over: 84 },
+                { nome: 'Giuliano', posicao: 'Meia', idade: 35, valor: 'R$ 5,5 milhões', over: 86 },
+                { nome: 'Cazares', posicao: 'Meia', idade: 33, valor: 'R$ 5,5 milhões', over: 83 },
+                { nome: 'Otero', posicao: 'Meia', idade: 30, valor: 'R$ 5,5 milhões', over: 82 },
+                { nome: 'Pedrinho', posicao: 'Atacante', idade: 26, valor: 'R$ 11 milhões', over: 84 },
+                { nome: 'Julio Furch', posicao: 'Atacante', idade: 34, valor: 'R$ 16 milhões', over: 87 },
+                { nome: 'Guilherme', posicao: 'Atacante', idade: 30, valor: 'R$ 11 milhões', over: 85 },
+                { nome: 'Alfredo Morelos', posicao: 'Atacante', idade: 28, valor: 'R$ 16 milhões', over: 86 },
+                { nome: 'Patati', posicao: 'Atacante', idade: 21, valor: 'R$ 8,2 milhões', over: 80 }
+            ]}
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const leagueTableBody = document.querySelector('#leagueTable tbody');
+            const calendarContainer = document.getElementById('calendar-container');
+            const selectedTeam = localStorage.getItem('selectedTeam');
+            
+            if (!selectedTeam) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const teams = Object.keys(squadsData);
+
+            function getInitialTableData() {
+                return teams.map(team => ({
+                    name: team,
+                    points: 0,
+                    played: 0,
+                    wins: 0,
+                    draws: 0,
+                    losses: 0,
+                    goalsFor: 0,
+                    goalsAgainst: 0,
+                    goalDifference: 0
+                }));
+            }
+
+            let tableData = localStorage.getItem('leagueTableData') ? JSON.parse(localStorage.getItem('leagueTableData')) : getInitialTableData();
+
+            function renderLeagueTable(data) {
+                data.sort((a, b) => {
+                    if (b.points !== a.points) return b.points - a.points;
+                    if (b.wins !== a.wins) return b.wins - a.wins;
+                    return b.goalDifference - a.goalDifference;
+                });
+                
+                leagueTableBody.innerHTML = '';
+                data.forEach((team, index) => {
+                    const row = document.createElement('tr');
+                    
+                    const position = index + 1;
+                    if (position >= 1 && position <= 4) {
+                        row.classList.add('libertadores-dark');
+                    } else if (position >= 5 && position <= 6) {
+                        row.classList.add('libertadores-light');
+                    } else if (position >= 7 && position <= 12) {
+                        row.classList.add('sulamericana');
+                    } else if (position >= 17 && position <= 20) {
+                        row.classList.add('rebaixamento');
+                    }
+
+                    if (team.name === selectedTeam) {
+                        row.classList.add('user-team');
+                    }
+                    
+                    row.innerHTML = `
+                        <td>${position}</td>
+                        <td>${team.name}</td>
+                        <td>${team.points}</td>
+                        <td>${team.played}</td>
+                        <td>${team.wins}</td>
+                        <td>${team.draws}</td>
+                        <td>${team.losses}</td>
+                        <td>${team.goalsFor}</td>
+                        <td>${team.goalsAgainst}</td>
+                        <td>${team.goalDifference}</td>
+                    `;
+                    leagueTableBody.appendChild(row);
+                });
+            }
+
+            function renderBrasileiraoCalendar() {
+                const brasileiraoCalendar = JSON.parse(localStorage.getItem('brasileiraoCalendar'));
+                const currentDate = localStorage.getItem('currentDate');
+                
+                if (brasileiraoCalendar) {
+                    calendarContainer.innerHTML = '';
+                    brasileiraoCalendar.forEach(rodada => {
+                        const meuTime = localStorage.getItem('selectedTeam');
+                        const partida = rodada.partidas.find(p => p.timeCasa === meuTime || p.timeFora === meuTime);
+                        
+                        if (partida) {
+                            const rodadaDiv = document.createElement('div');
+                            rodadaDiv.classList.add('rodada');
+                            
+                            rodadaDiv.innerHTML = `
+                                <h4>Rodada ${rodada.numero} - ${formatDate(new Date(partida.data))}</h4>
+                                <p>${partida.placar ? `${partida.timeCasa} <strong>${partida.placar.placarCasa}</strong> x <strong>${partida.placar.placarFora}</strong> ${partida.timeFora}` : `${partida.timeCasa} vs ${partida.timeFora}`}</p>
+                            `;
+
+                            if (!partida.placar) {
+                                const playButton = document.createElement('button');
+                                playButton.textContent = 'Chegou o jogo!';
+                                playButton.className = 'play-match-btn';
+
+                                // CORRIGIDO: Verifica se a data da partida é igual à data virtual do jogo
+                                const matchDateStr = new Date(partida.data).toISOString().slice(0, 10);
+                                const gameDateStr = new Date(currentDate).toISOString().slice(0, 10);
+
+                                if (matchDateStr !== gameDateStr) {
+                                    playButton.disabled = true;
+                                }
+
+                                playButton.onclick = () => {
+                                    if (playButton.disabled) return;
+                                    const currentRound = rodada.numero;
+                                    const isHome = partida.timeCasa === meuTime;
+                                    const opponent = isHome ? partida.timeFora : partida.timeCasa;
+                                    
+                                    localStorage.setItem('currentRound', currentRound);
+                                    localStorage.setItem('currentRoundOpponent', opponent);
+                                    localStorage.setItem('currentRoundIsHomeMatch', isHome);
+                                    localStorage.removeItem('isCopaMatch');
+                                    
+                                    window.location.href = 'taticas.html';
+                                };
+                                rodadaDiv.appendChild(playButton);
+                            }
+                            
+                            calendarContainer.appendChild(rodadaDiv);
+                        }
+                    });
+                }
+            }
+            
+            function showCompetition(containerId) {
+                document.querySelectorAll('.competitions-container').forEach(container => {
+                    container.style.display = 'none';
+                });
+                document.getElementById(containerId).style.display = 'block';
+            }
+
+            document.getElementById('showBrasileiraoBtn').addEventListener('click', () => {
+                showCompetition('brasileiraoCompleteContainer');
+                renderLeagueTable(tableData);
+                renderBrasileiraoCalendar();
+            });
+            document.getElementById('showEstaduaisBtn').addEventListener('click', () => showCompetition('estaduaisContainer'));
+            document.getElementById('showCopaBrasilBtn').addEventListener('click', () => showCompetition('copaBrasilContainer'));
+            document.getElementById('showSulAmericanaBtn').addEventListener('click', () => showCompetition('sulAmericanaContainer'));
+            document.getElementById('showLibertadoresBtn').addEventListener('click', () => showCompetition('libertadoresContainer'));
+            document.getElementById('showSuperMundialBtn').addEventListener('click', () => showCompetition('superMundialContainer'));
+            document.getElementById('showIntercontinentalBtn').addEventListener('click', () => showCompetition('intercontinentalContainer'));
+
+            showCompetition('brasileiraoCompleteContainer');
+            renderLeagueTable(tableData);
+            renderBrasileiraoCalendar();
+
+            function formatDate(date) {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            }
+        });
+    </script>
+</body>
+</html>

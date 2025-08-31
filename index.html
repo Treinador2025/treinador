@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Jogo - Treinador de Futebol</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+
+        :root {
+            --light-blue-gradient-start: #d1f4ff;
+            --light-blue-gradient-end: #a3e6ff;
+            --light-blue: #a3e6ff;
+            --bright-blue: #70d5ff;
+            --text-color-dark: #2c3e50;
+            --container-bg: #ffffff;
+            --input-bg: #f0f8ff;
+            --input-border: #c4e3ff;
+            --error-color: #e74c3c;
+            --button-start-bg: #70d5ff;
+            --button-start-hover: #5ac7e0;
+            --button-load-bg: #a3e6ff;
+            --button-load-hover: #8ac0d6;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--light-blue-gradient-start) 0%, var(--light-blue-gradient-end) 100%);
+            margin: 0;
+            color: var(--text-color-dark);
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            border: 2px solid var(--bright-blue);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .game-logo {
+            width: 80%;
+            max-width: 350px;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite ease-in-out;
+            filter: drop-shadow(0 0 10px var(--bright-blue));
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--bright-blue)); }
+            50% { transform: scale(1.02); filter: drop-shadow(0 0 15px var(--bright-blue)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--bright-blue)); }
+        }
+
+        h1 {
+            color: var(--text-color-dark);
+            font-size: 2.5em;
+            margin: 0 0 30px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        /* Estilo do botão do Brasileirão */
+        .brasileirao-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--text-color-dark);
+            background-color: var(--input-bg);
+            border: 2px solid var(--input-border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .brasileirao-button:hover {
+            background-color: #e6f6ff;
+            border-color: var(--bright-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .brasileirao-logo {
+            height: 25px;
+            vertical-align: middle;
+            margin-left: 8px;
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1));
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 12px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-color-dark);
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--bright-blue);
+            box-shadow: 0 0 8px var(--bright-blue);
+        }
+
+        button {
+            padding: 18px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background-color: var(--button-start-bg);
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: var(--button-start-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #loadSavedGameButton {
+            background-color: var(--button-load-bg);
+            color: var(--text-color-dark);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        #loadSavedGameButton:hover {
+            background-color: var(--button-load-hover);
+            color: var(--text-color-dark);
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            margin-top: 5px;
+            margin-bottom: 0;
+            font-size: 0.9em;
+            text-align: left;
+            display: none;
+        }
+
+        /* Novas regras para o modal (mantidas caso a função "Continuar Jogo Salvo" precise) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 450px;
+            text-align: left;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .save-list {
+            margin-top: 20px;
+        }
+
+        .save-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background-color: #f8f8f8;
+        }
+        
+        .save-item:hover {
+            background-color: #eef;
+            border-color: var(--bright-blue);
+            transform: scale(1.02);
+        }
+
+        .save-info {
+            flex-grow: 1;
+        }
+
+        .save-info h4 {
+            margin: 0;
+            font-size: 1.1em;
+            color: var(--text-color-dark);
+        }
+
+        .save-info p {
+            margin: 5px 0 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* ---------------------------------------------------- */
+        /* NOVO DESIGN: SELEÇÃO DE TIMES */
+        /* ---------------------------------------------------- */
+        .team-grid {
+            display: none; /* Inicia oculto */
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .team-grid.visible {
+            display: grid;
+        }
+
+        .team-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--input-bg);
+            border: 2px solid var(--input-border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            user-select: none;
+        }
+
+        .team-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--bright-blue);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-item.selected {
+            border-color: var(--bright-blue);
+            background-color: #e6f6ff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 0 10px var(--bright-blue);
+            transform: scale(1.05);
+        }
+
+        .team-logo {
+            width: 45px;
+            height: 45px;
+            margin-bottom: 10px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            object-fit: contain;
+            background-color: white;
+            padding: 5px;
+        }
+
+        .team-name {
+            font-weight: 600;
+            font-size: 1em;
+            color: var(--text-color-dark);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="logos/logo_do_jogo.png" alt="Logo do Jogo Treinador 2025" class="game-logo">
+
+        <div class="input-group" id="coachNameGroup">
+            <label for="coachName">Nome do Treinador:</label>
+            <input type="text" id="coachName" placeholder="Digite seu nome aqui">
+            <p id="nameError" class="error-message">insira o nome do treinador.</p>
+        </div>
+        <div class="input-group" id="coachNameGroup">
+            <label for="coachName">Escolha a Liga:</label>
+        <div class="input-group" id="teamSelectGroup">
+            <div id="teamSelectButton" class="brasileirao-button">
+                Brasileirão 2025 <img src="logos/Brasileirao_betano_2025.png" alt="Logo Brasileirão Betano 2025" class="brasileirao-logo">
+            </div>
+            
+            <div class="team-grid" id="teamGrid">
+            </div>
+            <input type="hidden" id="teamSelect">
+            <p id="teamError" class="error-message">Por favor, selecione um time.</p>
+        </div>
+
+        <button id="loadSavedGameButton">Continuar Jogo Salvo</button>
+        <button id="startGameButton">Seja Treinador</button>
+    </div>
+
+    <div id="savesModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Carregar Jogo</h2>
+            <div id="saveList" class="save-list">
+            </div>
+        </div>
+    </div>
+
+    <script src="salvar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startGameButton = document.getElementById('startGameButton');
+            const loadSavedGameButton = document.getElementById('loadSavedGameButton');
+            const coachNameInput = document.getElementById('coachName');
+            const teamSelectInput = document.getElementById('teamSelect');
+            const teamGrid = document.getElementById('teamGrid');
+            const teamSelectButton = document.getElementById('teamSelectButton');
+            const savesModal = document.getElementById('savesModal');
+            const saveList = document.getElementById('saveList');
+            const closeModalButton = document.querySelector('#savesModal .close-button');
+            
+            // Dados dos times com os nomes e caminhos dos logos
+            const teams = [
+                { name: 'Mirassol', logo: 'logos/mirassol.png' },
+                { name: 'Atlético-MG', logo: 'logos/atletico_mg.png' },
+                { name: 'Bahia', logo: 'logos/bahia.png' },
+                { name: 'Botafogo', logo: 'logos/botafogo.png' },
+                { name: 'Ceará', logo: 'logos/ceara.png' },
+                { name: 'Corinthians', logo: 'logos/corinthians.png' },
+                { name: 'Cruzeiro', logo: 'logos/cruzeiro.png' },
+                { name: 'Sport', logo: 'logos/sport.png' },
+                { name: 'Flamengo', logo: 'logos/flamengo.png' },
+                { name: 'Fluminense', logo: 'logos/fluminense.png' },
+                { name: 'Fortaleza', logo: 'logos/fortaleza.png' },
+                { name: 'Grêmio', logo: 'logos/grêmio.png' },
+                { name: 'Internacional', logo: 'logos/internacional.png' },
+                { name: 'Juventude', logo: 'logos/juventude.png' },
+                { name: 'Palmeiras', logo: 'logos/palmeiras.png' },
+                { name: 'Bragantino', logo: 'logos/bragantino.png' },
+                { name: 'São Paulo', logo: 'logos/são_paulo.png' },
+                { name: 'Vasco', logo: 'logos/vasco.png' },
+                { name: 'Vitória', logo: 'logos/vitoria.png' },
+                { name: 'Santos', logo: 'logos/santos.png' },
+            ];
+            
+            // Função para renderização instantânea
+            function renderTeamsInstant() {
+                const fragment = document.createDocumentFragment();
+                
+                teams.forEach(team => {
+                    const teamItem = document.createElement('div');
+                    teamItem.classList.add('team-item');
+                    teamItem.dataset.teamName = team.name;
+                    teamItem.innerHTML = `
+                        <img src="${team.logo}" alt="Logo do ${team.name}" class="team-logo">
+                        <span class="team-name">${team.name}</span>
+                    `;
+                    teamItem.addEventListener('click', () => {
+                        document.querySelectorAll('.team-item').forEach(item => {
+                            item.classList.remove('selected');
+                        });
+                        teamItem.classList.add('selected');
+                        teamSelectInput.value = team.name;
+                        document.getElementById('teamError').style.display = 'none';
+                    });
+                    fragment.appendChild(teamItem);
+                });
+                
+                teamGrid.appendChild(fragment);
+            }
+            
+            // Novo evento de clique para o botão "Brasileirão 2025"
+            teamSelectButton.addEventListener('click', () => {
+                teamGrid.classList.add('visible'); // Mostra a grade de times
+                if (teamGrid.children.length === 0) {
+                    setTimeout(renderTeamsInstant, 0);
+                }
+            });
+
+            function updateUI() {
+                const hasSaves = verificarMultiplosSaves();
+                if (hasSaves) {
+                    loadSavedGameButton.style.display = 'block';
+                } else {
+                    loadSavedGameButton.style.display = 'none';
+                }
+            }
+
+            function updateSaveList() {
+                saveList.innerHTML = '';
+                const saves = listarJogosSalvos();
+                if (saves.length === 0) {
+                    saveList.innerHTML = '<p>Nenhum jogo salvo encontrado.</p>';
+                    return;
+                }
+                
+                saves.forEach((save, index) => {
+                    const saveItem = document.createElement('div');
+                    saveItem.classList.add('save-item');
+                    saveItem.innerHTML = `
+                        <div class="save-info">
+                            <h4>Treinador: ${save.coachName}</h4>
+                            <p>Time: ${save.selectedTeam}</p>
+                            <p>Último Dia: ${new Date(save.currentDate).toLocaleDateString('pt-BR')}</p>
+                        </div>
+                        <button class="delete-btn" onclick="excluirEAtualizar(${index})">Excluir</button>
+                    `;
+                    saveItem.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('delete-btn')) return;
+                        carregarJogo(index);
+                    });
+                    saveList.appendChild(saveItem);
+                });
+            }
+
+            window.excluirEAtualizar = function(index) {
+                excluirJogoSalvo(index);
+                updateSaveList();
+                updateUI();
+            }
+
+            updateUI();
+
+            startGameButton.addEventListener('click', function() {
+                const coachName = coachNameInput.value.trim();
+                const selectedTeam = teamSelectInput.value;
+                let hasError = false;
+
+                if (coachName === '') {
+                    document.getElementById('nameError').style.display = 'block';
+                    hasError = true;
+                } else {
+                    document.getElementById('nameError').style.display = 'none';
+                }
+
+                if (selectedTeam === '') {
+                    document.getElementById('teamError').style.display = 'block';
+                    hasError = true;
+                } else {
+                    document.getElementById('teamError').style.display = 'none';
+                }
+
+                if (!hasError) {
+                    // Limpa todos os dados antes de iniciar um novo jogo
+                    limparTodosDados();
+                    
+                    const financasIniciais = inicializarFinancas();
+                    localStorage.setItem('financas', JSON.stringify(financasIniciais));
+                    localStorage.setItem('coachName', coachName);
+                    localStorage.setItem('selectedTeam', selectedTeam);
+                    localStorage.setItem('currentDate', new Date('2025-01-01T12:00:00').toISOString());
+                    localStorage.setItem('currentRound', '0');
+                    window.location.href = 'game.html';
+                }
+            });
+
+            loadSavedGameButton.addEventListener('click', function() {
+                updateSaveList();
+                savesModal.style.display = 'flex';
+            });
+            
+            closeModalButton.onclick = function() {
+                savesModal.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target == savesModal) {
+                    savesModal.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

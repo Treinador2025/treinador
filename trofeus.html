@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troféus - Treinador 2025</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0f7fa, #c5e1eA); /* Gradiente suave */
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Fundo com transparência */
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); /* Sombra mais suave */
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            backdrop-filter: blur(10px); /* Efeito de vidro fosco */
+            border: 1px solid rgba(255, 255, 255, 0.5); /* Borda sutil */
+        }
+
+        h1 {
+            color: #1c3950;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .trophies-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 30px;
+            min-height: 200px;
+            align-items: center;
+            flex-direction: row; /* Para garantir que os troféus fiquem lado a lado */
+        }
+
+        .trophy-item {
+            width: 160px;
+            text-align: center;
+        }
+
+        .trophy-image {
+            width: 110px;
+            height: 110px;
+            background-color: #bbdefb; /* Cor de fundo moderna */
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.0em;
+            color: #1976d2;
+            border: 3px solid #64b5f6;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .trophy-name {
+            font-weight: 600;
+            color: #1e88e5;
+            margin-bottom: 5px;
+        }
+        
+        .trophy-year {
+            color: #757575;
+            font-size: 0.9em;
+        }
+        
+        .no-trophies-message {
+            font-size: 1.3em;
+            color: #546e7a;
+        }
+
+        .return-button {
+            background-color: #64b5f6;
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .return-button:hover {
+            background-color: #42a5f5;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .return-button::before {
+            content: '←';
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Troféus</h1>
+        <div id="trophiesList" class="trophies-list">
+            </div>
+
+        <button class="return-button" onclick="window.location.href='game.html'">Voltar</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectedTeam = localStorage.getItem('selectedTeam');
+            const trophiesListContainer = document.getElementById('trophiesList');
+
+            if (!selectedTeam) {
+                // Redireciona se não houver time selecionado
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Recupera os troféus do time atual
+            const trophies = JSON.parse(localStorage.getItem(`trofeus_${selectedTeam}`)) || [];
+
+            if (trophies.length === 0) {
+                trophiesListContainer.innerHTML = '<p class="no-trophies-message">Seu time ainda não conquistou nenhum troféu.</p>';
+            } else {
+                trophiesListContainer.style.flexDirection = 'row'; // Muda a direção para exibir lado a lado
+                trophies.forEach(trophy => {
+                    const trophyItem = document.createElement('div');
+                    trophyItem.classList.add('trophy-item');
+                    
+                    const trophyImage = document.createElement('div');
+                    trophyImage.classList.add('trophy-image');
+                    trophyImage.textContent = '🏆'; // Ícone padrão
+                    
+                    const trophyName = document.createElement('p');
+                    trophyName.classList.add('trophy-name');
+                    trophyName.textContent = trophy.name;
+                    
+                    const trophyYear = document.createElement('p');
+                    trophyYear.classList.add('trophy-year');
+                    trophyYear.textContent = trophy.year;
+                    
+                    trophyItem.appendChild(trophyImage);
+                    trophyItem.appendChild(trophyName);
+                    trophyItem.appendChild(trophyYear);
+                    
+                    trophiesListContainer.appendChild(trophyItem);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

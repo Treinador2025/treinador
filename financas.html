@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanças - Treinador 2025</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-blue: #007bff;
+            --dark-blue: #0056b3;
+            --light-blue: #e7f5ff;
+            --text-color: #004d99; /* Novo tom de azul para o texto */
+            --light-bg: #f4f7f9;
+            --card-bg: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --success-color: #28a745;
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            max-width: 650px;
+            width: 100%;
+        }
+
+        h1 {
+            color: var(--dark-blue);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .financas-section {
+            margin-bottom: 25px;
+        }
+
+        .financas-section h2 {
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 10px;
+            color: var(--dark-blue);
+            font-weight: 600;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .financas-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: var(--light-blue);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: transform 0.2s ease-in-out;
+            color: var(--text-color);
+        }
+
+        .financas-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .financas-item span {
+            font-weight: 400;
+        }
+
+        .financas-item strong {
+            color: var(--dark-blue);
+        }
+
+        .financas-item span:first-child {
+            font-weight: 600;
+        }
+
+        .saldo-total {
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: 600;
+            color: var(--dark-blue);
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+        }
+
+        .saldo-total #saldoAtual {
+            color: var(--success-color);
+        }
+
+        /* Estilos adicionais para harmonização */
+        .financas-section h2 {
+            display: flex;
+            align-items: center;
+        }
+
+        .financas-section h2::before {
+            content: '💰'; /* Ícone para Receitas */
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .financas-section:last-of-type h2::before {
+            content: '💸'; /* Ícone para Despesas */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Finanças do Time</h1>
+        
+        <div class="financas-section">
+            <h2>Receitas</h2>
+            <div class="financas-item">
+                <span>Patrocínio:</span>
+                <span id="patrocinioReceita">R$ 0</span>
+            </div>
+            <div class="financas-item">
+                <span>Ingressos:</span>
+                <span id="ingressosReceita">R$ 0</span>
+            </div>
+            <div class="financas-item">
+                <span>Prêmios:</span>
+                <span id="premiosReceita">R$ 0</span>
+            </div>
+            <div class="financas-item">
+                <span>Transferências:</span>
+                <span id="transferenciasReceita">R$ 0</span>
+            </div>
+        </div>
+        
+        <div class="financas-section">
+            <h2>Despesas</h2>
+            <div class="financas-item">
+                <span>Salários:</span>
+                <span id="salariosDespesa">R$ 0</span>
+            </div>
+            <div class="financas-item">
+                <span>Manutenção de Estádio:</span>
+                <span id="manutencaoDespesa">R$ 0</span>
+            </div>
+            <div class="financas-item">
+                <span>Transferências:</span>
+                <span id="transferenciasDespesa">R$ 0</span>
+            </div>
+        </div>
+
+        <div class="saldo-total">
+            Saldo: <span id="saldoAtual">R$ 40.000.000</span>
+        </div>
+    </div>
+
+    <script src="salvar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verifica se o objeto de finanças existe no localStorage, caso contrário, inicializa
+            if (!localStorage.getItem('financas')) {
+                localStorage.setItem('financas', JSON.stringify(inicializarFinancas()));
+            }
+
+            function atualizarExibicaoFinancas() {
+                const financas = JSON.parse(localStorage.getItem('financas'));
+                if (financas) {
+                    document.getElementById('saldoAtual').textContent = `R$ ${financas.saldo.toLocaleString('pt-BR')}`;
+                    document.getElementById('patrocinioReceita').textContent = `R$ ${financas.receitas.patrocinio.toLocaleString('pt-BR')}`;
+                    document.getElementById('ingressosReceita').textContent = `R$ ${financas.receitas.ingressos.toLocaleString('pt-BR')}`;
+                    document.getElementById('premiosReceita').textContent = `R$ ${financas.receitas.premios.toLocaleString('pt-BR')}`;
+                    document.getElementById('transferenciasReceita').textContent = `R$ ${financas.receitas.transferencias.toLocaleString('pt-BR')}`;
+                    document.getElementById('salariosDespesa').textContent = `R$ ${financas.despesas.salarios.toLocaleString('pt-BR')}`;
+                    document.getElementById('manutencaoDespesa').textContent = `R$ ${financas.despesas.manutencao.toLocaleString('pt-BR')}`;
+                    document.getElementById('transferenciasDespesa').textContent = `R$ ${financas.despesas.transferencias.toLocaleString('pt-BR')}`;
+                }
+            }
+            atualizarExibicaoFinancas();
+        });
+    </script>
+</body>
+</html>
+

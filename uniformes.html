@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinador 2025 - Escolha de Partida</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Cores base */
+            --primary-light: #8ecae6;
+            --primary-dark: #219ebc;
+            --accent-color: #023047;
+            --background-gradient-start: #a8dadc;
+            --background-gradient-end: #457b9d;
+            --card-background: rgba(255, 255, 255, 0.15);
+            --card-border: rgba(255, 255, 255, 0.3);
+            --selection-glow: 0 0 15px rgba(142, 202, 230, 0.8);
+            --button-bg-start: #8ecae6;
+            --button-bg-end: #219ebc;
+            --button-hover-start: #219ebc;
+            --button-hover-end: #023047;
+            --text-light: #ffffff;
+            --text-dark: #023047;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 950px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: var(--accent-color);
+            margin-bottom: 25px;
+            font-size: 3em;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: var(--accent-color);
+            font-size: 2em;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            opacity: 0.9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-header {
+            width: 100%;
+            background: var(--card-background);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .section-header img {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.15));
+            transition: transform 0.3s ease;
+        }
+
+        .section-header img:hover {
+            transform: scale(1.05);
+        }
+
+        .section-header .vs-text {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            margin: 0 10px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 25px;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        /* Estilo específico para a seção de árbitros (remove a rolagem lateral) */
+        .options-grid.referee-options {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Botões se adaptam */
+            gap: 20px;
+        }
+        
+        /* Estilo para a seção de transmissão */
+        .options-grid.broadcast-options {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 25px;
+        }
+        
+        .broadcast-options .option-item img {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .option-item {
+            background: var(--card-background);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .option-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            z-index: -1;
+        }
+
+        /* Aplica o tamanho para TODAS as imagens de uniforme (do seu time e do adversário) */
+        .options-grid[data-uniform-group="true"] .option-item img {
+            max-width: 180px;
+            height: auto;
+        }
+        
+        .weather-options .option-item img {
+            max-width: 90px;
+        }
+
+        .option-item.selected {
+            transform: translateY(-8px) scale(1.03); /* Efeito de 'pop' */
+            box-shadow: var(--selection-glow);
+            border-color: var(--primary-dark);
+        }
+        
+        .option-item.selected img {
+            border-color: var(--primary-dark);
+        }
+        
+        .option-item.selected span {
+            font-weight: 800;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            color: var(--accent-color);
+        }
+
+        .option-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .option-item span {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+            color: var(--accent-color);
+            font-size: 1.1em;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        }
+        
+        .referee-options .option-item {
+            padding: 15px 20px;
+        }
+        .referee-options .option-item span {
+            margin: 0; /* Remove a margem para ficar mais limpo */
+        }
+
+        .action-button {
+            background: linear-gradient(45deg, var(--button-bg-start), var(--button-bg-end));
+            color: var(--text-light);
+            padding: 18px 35px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.3em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 40px;
+        }
+
+        .action-button:hover {
+            background: linear-gradient(45deg, var(--button-hover-start), var(--button-hover-end));
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-button:disabled {
+            background: #b0c4de;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 2.5em;
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+            .section-header img {
+                height: 50px;
+            }
+            .section-header .vs-text {
+                font-size: 1.5em;
+            }
+            .options-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 15px;
+            }
+            .options-grid[data-uniform-group="true"] .option-item img {
+                max-width: 120px;
+            }
+            .weather-options .option-item img {
+                max-width: 80px;
+            }
+            .action-button {
+                font-size: 1.1em;
+                padding: 15px 25px;
+            }
+            .options-grid.referee-options {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.4em;
+            }
+            .section-header {
+                flex-direction: row;
+                justify-content: center;
+                gap: 10px;
+            }
+            .section-header img {
+                height: 40px;
+            }
+            .section-header .vs-text {
+                font-size: 1.2em;
+            }
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .options-grid[data-uniform-group="true"] .option-item img {
+                max-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1></h1>
+        
+        <div class="section-header">
+            <img id="teamLogo" src="" alt="Logo do seu time">
+            <span class="x-text">x</span>
+            <img id="opponentLogo" src="" alt="Logo do adversário">
+        </div>
+
+        <h2>Selecione o Uniforme:</h2>
+        <div class="options-grid" data-uniform-group="true"> 
+            <div class="option-item" data-type="uniform" data-value="home">
+                <img id="homeUniform" src="" alt="Uniforme Casa">
+                <span>Casa</span>
+            </div>
+            <div class="option-item" data-type="uniform" data-value="away">
+                <img id="awayUniform" src="" alt="Uniforme Fora">
+                <span>Fora</span>
+            </div>
+        </div>
+
+        <h2>Uniforme do Adversário:</h2>
+        <div class="options-grid" data-uniform-group="true"> 
+            <div class="option-item" data-type="opponent-uniform" data-value="home">
+                <img id="opponentHomeUniform" src="" alt="Uniforme Adversário Casa">
+                <span>Casa</span>
+            </div>
+            <div class="option-item" data-type="opponent-uniform" data-value="away">
+                <img id="opponentAwayUniform" src="" alt="Uniforme Adversário Fora">
+                <span>Fora</span>
+            </div>
+        </div>
+        
+        <h2>Condições Climáticas:</h2>
+        <div class="options-grid weather-options">
+            <div class="option-item" data-type="weather" data-value="sol">
+                <img src="logos/sol.png" alt="Sol">
+                <span>Sol</span>
+            </div>
+            <div class="option-item" data-type="weather" data-value="chuva">
+                <img src="logos/chuva.png" alt="Chuva">
+                <span>Chuva</span>
+            </div>
+        </div>
+        
+        <h2>Escolha o Árbitro:<img src="logos/apito.png" alt="Ícone de apito" style="height: 40px;"></h2>
+        <div class="options-grid referee-options">
+            <div class="option-item" data-type="referee" data-value="Anderson Daronco">
+                <span>Anderson Daronco</span>
+            </div>
+            <div class="option-item" data-type="referee" data-value="Raphael Claus">
+                <span>Raphael Claus</span>
+            </div>
+            <div class="option-item" data-type="referee" data-value="Flávio Rodrigues de Souza">
+                <span>Flávio Rodrigues de Souza</span>
+            </div>
+            <div class="option-item" data-type="referee" data-value="Leandro Pedro Vuaden">
+                <span>Leandro Pedro Vuaden</span>
+            </div>
+            <div class="option-item" data-type="referee" data-value="Sávio Pereira Sampaio">
+                <span>Sávio Pereira Sampaio</span>
+            </div>
+        </div>
+        
+        <h2>Escolha a Emissora:</h2>
+        <div class="options-grid broadcast-options">
+            <div class="option-item" data-type="broadcaster" data-value="globo">
+                <img src="logos/globo.png" alt="Logo Globo">
+            </div>
+            <div class="option-item" data-type="broadcaster" data-value="sportv">
+                <img src="logos/sportv.png" alt="Logo SporTV">
+            </div>
+        </div>
+
+        <button class="action-button" id="confirmButton" disabled>Confirmar e Ir para Táticas</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectedTeam = localStorage.getItem('selectedTeam');
+            const opponentName = localStorage.getItem('currentRoundOpponent');
+            const isHomeMatch = localStorage.getItem('currentRoundIsHomeMatch') === 'true';
+
+            const teamLogo = document.getElementById('teamLogo');
+            const opponentLogo = document.getElementById('opponentLogo');
+
+            function formatTeamNameForImage(teamName) {
+                return teamName.toLowerCase().replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i').replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ç/g, 'c').replace(/ /g, '_').replace(/-/g, '_');
+            }
+            
+            teamLogo.src = `logos/${formatTeamNameForImage(selectedTeam)}.png`;
+            opponentLogo.src = `logos/${formatTeamNameForImage(opponentName)}.png`;
+
+            const confirmButton = document.getElementById('confirmButton');
+            const uniformItems = document.querySelectorAll('[data-type="uniform"]');
+            const opponentUniformItems = document.querySelectorAll('[data-type="opponent-uniform"]');
+            const weatherItems = document.querySelectorAll('[data-type="weather"]');
+            const refereeItems = document.querySelectorAll('[data-type="referee"]');
+            const broadcasterItems = document.querySelectorAll('[data-type="broadcaster"]');
+
+            let selectedUniform = null;
+            let selectedOpponentUniform = null;
+            let selectedWeather = null;
+            let selectedReferee = null;
+            let selectedBroadcaster = null;
+            let selectedCommentary = null;
+
+            const homeUniformPath = `logos/${formatTeamNameForImage(selectedTeam)}_home.png`;
+            const awayUniformPath = `logos/${formatTeamNameForImage(selectedTeam)}_away.png`;
+            const opponentHomeUniformPath = `logos/${formatTeamNameForImage(opponentName)}_home.png`;
+            const opponentAwayUniformPath = `logos/${formatTeamNameForImage(opponentName)}_away.png`;
+
+            document.getElementById('homeUniform').src = homeUniformPath;
+            document.getElementById('awayUniform').src = awayUniformPath;
+            document.getElementById('opponentHomeUniform').src = opponentHomeUniformPath;
+            document.getElementById('opponentAwayUniform').src = opponentAwayUniformPath;
+
+            function checkSelections() {
+                if (selectedUniform && selectedOpponentUniform && selectedWeather && selectedReferee && selectedBroadcaster) {
+                    confirmButton.disabled = false;
+                }
+            }
+
+            uniformItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    uniformItems.forEach(el => el.classList.remove('selected'));
+                    item.classList.add('selected');
+                    selectedUniform = item.dataset.value;
+                    checkSelections();
+                });
+            });
+
+            opponentUniformItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    opponentUniformItems.forEach(el => el.classList.remove('selected'));
+                    item.classList.add('selected');
+                    selectedOpponentUniform = item.dataset.value;
+                    checkSelections();
+                });
+            });
+
+            weatherItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    weatherItems.forEach(el => el.classList.remove('selected'));
+                    item.classList.add('selected');
+                    selectedWeather = item.dataset.value;
+                    checkSelections();
+                });
+            });
+
+            refereeItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    refereeItems.forEach(el => el.classList.remove('selected'));
+                    item.classList.add('selected');
+                    selectedReferee = item.dataset.value;
+                    checkSelections();
+                });
+            });
+
+            broadcasterItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    broadcasterItems.forEach(el => el.classList.remove('selected'));
+                    item.classList.add('selected');
+                    selectedBroadcaster = item.dataset.value;
+                    if (selectedBroadcaster === 'globo') {
+                        selectedCommentary = 'Luis Roberto';
+                    } else if (selectedBroadcaster === 'sportv') {
+                        selectedCommentary = 'Luiz Carlos Jr.';
+                    }
+                    checkSelections();
+                });
+            });
+
+            confirmButton.addEventListener('click', () => {
+                localStorage.setItem('selectedUniform', selectedUniform);
+                localStorage.setItem('selectedOpponentUniform', selectedOpponentUniform);
+                localStorage.setItem('selectedWeather', selectedWeather);
+                localStorage.setItem('selectedReferee', selectedReferee);
+                localStorage.setItem('selectedBroadcaster', selectedBroadcaster);
+                localStorage.setItem('selectedCommentary', selectedCommentary);
+                window.location.href = 'taticas.html';
+            });
+            
+            if (isHomeMatch) {
+                const homeKit = document.querySelector('[data-type="uniform"][data-value="home"]');
+                if (homeKit) {
+                    homeKit.click();
+                }
+
+                const opponentAwayKit = document.querySelector('[data-type="opponent-uniform"][data-value="away"]');
+                if (opponentAwayKit) {
+                    opponentAwayKit.click();
+                }
+            } else {
+                const awayKit = document.querySelector('[data-type="uniform"][data-value="away"]');
+                if (awayKit) {
+                    awayKit.click();
+                }
+                
+                const opponentHomeKit = document.querySelector('[data-type="opponent-uniform"][data-value="home"]');
+                if (opponentHomeKit) {
+                    opponentHomeKit.click();
+                }
+            }
+            
+            const randomWeather = Math.random() < 0.5 ? 'sol' : 'chuva';
+            const defaultWeather = document.querySelector(`[data-type="weather"][data-value="${randomWeather}"]`);
+            if (defaultWeather) {
+                defaultWeather.click();
+            }
+            
+            const randomIndex = Math.floor(Math.random() * refereeItems.length);
+            refereeItems[randomIndex].click();
+            
+            const randomBroadcasterIndex = Math.floor(Math.random() * broadcasterItems.length);
+            broadcasterItems[randomBroadcasterIndex].click();
+        });
+    </script>
+</body>
+</html>
+
